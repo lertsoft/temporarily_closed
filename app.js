@@ -730,14 +730,14 @@ class InteractiveBook {
             popup.innerHTML = `
                 <div class="popup-content">
                     <div class="popup-header">
-                        <h2>📖 Enjoyed the book?</h2>
+                        <h2>📖 Enjoyed the zine?</h2>
                         <button class="close-popup" id="close-popup">&times;</button>
                     </div>
                     <div class="popup-body">
-                        <p>You've reached the end of the preview!</p>
-                        <p><strong>You can buy this book now here</strong></p>
+                        <p>You have reached the end of the preview!</p>
+                        <p><strong>You can buy this zine now here</strong></p>
                         <div class="popup-actions">
-                            <a href="https://ronnycoste.com" target="_blank" class="buy-button">
+                            <a href="https://www.etsy.com/listing/1849155237/temporarily-closed-zine-pre-order" target="_blank" class="buy-button">
                                 🛒 Buy Now
                             </a>
                             <button class="continue-reading" id="continue-reading">
