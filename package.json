@@ -1,0 +1,23 @@
+{
+  "name": "temporarily-closed-3d-book",
+  "version": "1.0.0",
+  "description": "Interactive 3D book viewer for Temporarily Closed NYC",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx http-server . -c-1 -p 8080",
+    "dev": "npx http-server . -c-1 -p 8080 -o"
+  },
+  "keywords": [
+    "threejs",
+    "3d",
+    "book",
+    "interactive",
+    "webgl"
+  ],
+  "author": "Ronny Coste",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

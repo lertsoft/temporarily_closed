@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Temporarily Closed NYC - Interactive 3D Book</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-title">
+               <a href="/"> <h1>Temporarily Closed</h1> </a>
+            </div>
+            <div class="navbar-links">
+                <a href="https://ronnycoste.com/temporarily-closed-nyc" target="_blank" class="nav-link">Buy the book</a>
+                <a href="https://ronnycoste.com/about" target="_blank" class="nav-link">About me</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="book-loader">
+                <div class="book-page"></div>
+                <div class="book-page"></div>
+                <div class="book-page"></div>
+            </div>
+            <p>Loading your book...</p>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="controls">
+        <div class="control-hint desktop-only">
+            <span class="icon">🖱️</span>
+            <span>Click & drag to rotate</span>
+        </div>
+        <div class="control-hint mobile-only">
+            <span class="icon">👆</span>
+            <span>Move the book</span>
+        </div>
+        <div class="control-hint">
+            <span class="icon">📖</span>
+            <span>Tap to open</span>
+        </div>
+        <div class="control-hint desktop-only">
+            <span class="icon">⬅️➡️</span>
+            <span>Arrow keys to turn pages</span>
+        </div>
+        <div class="control-hint mobile-only">
+            <span class="icon">👆</span>
+            <span>Swipe left/right to turn pages</span>
+        </div>
+    </div>
+
+    <div id="page-indicator">
+        <span id="current-page">Cover</span>
+    </div>
+
+    <div id="navigation-arrows">
+        <button id="prev-arrow" class="nav-arrow nav-arrow-left">
+            <span>‹</span>
+        </button>
+        <button id="next-arrow" class="nav-arrow nav-arrow-right">
+            <span>›</span>
+        </button>
+    </div>
+
+    <div id="swipe-hint" class="swipe-hint mobile-only">
+        <div class="swipe-animation">
+            <span class="swipe-icon">👆</span>
+            <span class="swipe-text">Swipe to turn pages</span>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
