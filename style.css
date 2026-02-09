@@ -9,11 +9,16 @@ body {
     background: #ffffff;
     overflow: hidden;
     cursor: grab;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    -webkit-touch-callout: none; /* Disable callout on iOS */
-    -webkit-user-select: none; /* Disable text selection */
-    -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
-    touch-action: manipulation; /* Optimize touch handling */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+    -webkit-touch-callout: none;
+    /* Disable callout on iOS */
+    -webkit-user-select: none;
+    /* Disable text selection */
+    -webkit-tap-highlight-color: transparent;
+    /* Remove tap highlight */
+    touch-action: manipulation;
+    /* Optimize touch handling */
 }
 
 /* Navbar */
@@ -79,18 +84,18 @@ body {
     transform: translateY(-1px);
 }
 
-.nav-link:first-child {
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
+.nav-link-ar {
+    background: linear-gradient(45deg, #8B5CF6, #6D28D9);
     color: white;
     padding: 10px 20px;
     font-weight: 600;
 }
 
-.nav-link:first-child:hover {
-    background: linear-gradient(45deg, #c0392b, #a93226);
+.nav-link-ar:hover {
+    background: linear-gradient(45deg, #7C3AED, #5B21B6);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 body:active {
@@ -162,9 +167,12 @@ body:active {
 }
 
 @keyframes bookRotate {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: rotateY(-20deg);
     }
+
     50% {
         transform: rotateY(20deg);
     }
@@ -223,18 +231,19 @@ body:active {
     .desktop-only {
         display: none;
     }
-    
+
     .mobile-only {
         display: flex;
         /* flex-direction: row; */
-        
+
     }
 }
 
 /* Page Indicator */
 #page-indicator {
     position: fixed;
-    top: 90px; /* Moved down to account for navbar */
+    top: 90px;
+    /* Moved down to account for navbar */
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.8);
@@ -255,10 +264,12 @@ body:active {
     transform: translate(-50%, -50%);
     width: 80vw;
     max-width: 800px;
-    display: none; /* Hidden by default, shown when book is open */
+    display: none;
+    /* Hidden by default, shown when book is open */
     justify-content: space-between;
     align-items: center;
-    pointer-events: none; /* Allow clicking through the container */
+    pointer-events: none;
+    /* Allow clicking through the container */
     z-index: 1500;
 }
 
@@ -289,11 +300,15 @@ body:active {
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: auto; /* Arrows are clickable */
+    pointer-events: auto;
+    /* Arrows are clickable */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
-    user-select: none; /* Prevent text selection */
-    touch-action: manipulation; /* Optimize touch handling */
+    -webkit-tap-highlight-color: transparent;
+    /* Remove tap highlight */
+    user-select: none;
+    /* Prevent text selection */
+    touch-action: manipulation;
+    /* Optimize touch handling */
 }
 
 .nav-arrow:hover {
@@ -364,12 +379,16 @@ body:active {
 }
 
 @keyframes swipeAnimation {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateX(0);
     }
+
     25% {
         transform: translateX(-5px);
     }
+
     75% {
         transform: translateX(5px);
     }
@@ -474,7 +493,8 @@ body:active {
     flex-wrap: wrap;
 }
 
-.buy-button, .continue-reading {
+.buy-button,
+.continue-reading {
     padding: 15px 30px;
     border-radius: 50px;
     text-decoration: none;
@@ -511,6 +531,7 @@ body:active {
 
 /* Responsive */
 @media (max-width: 768px) {
+
     /* Navbar Mobile */
     .navbar {
         height: 60px;
@@ -533,7 +554,7 @@ body:active {
         padding: 6px 12px;
     }
 
-    .nav-link:first-child {
+    .nav-link-ar {
         padding: 8px 16px;
     }
 
@@ -546,7 +567,8 @@ body:active {
     }
 
     #page-indicator {
-        top: 90px; /* Adjusted for smaller mobile navbar */
+        top: 90px;
+        /* Adjusted for smaller mobile navbar */
         font-size: 12px;
         padding: 8px 16px;
     }
@@ -614,7 +636,8 @@ body:active {
         align-items: center;
     }
 
-    .buy-button, .continue-reading {
+    .buy-button,
+    .continue-reading {
         width: 100%;
         max-width: 250px;
     }
@@ -630,7 +653,7 @@ body:active {
         padding: 5px 10px;
     }
 
-    .nav-link:first-child {
+    .nav-link-ar {
         padding: 7px 14px;
     }
 

@@ -29,10 +29,31 @@ An immersive 3D web experience showcasing the "Temporarily Closed NYC" book with
 - **Cross-Platform Design**: Seamlessly works on desktop and mobile devices
 - **Loading Indicator**: Animated book loader while assets load
 
+## 📱 AR Experience
+
+Point your phone's camera at pages in the physical zine to unlock augmented reality content!
+
+### AR Features
+- **Image Target Tracking**: Uses MindAR.js for real-time image recognition
+- **Cover Detection**: Animated 3D title floats above the cover
+- **Regal Cinemas Page**: Before/after comparison - tap to toggle between "Temporarily Closed" and a bustling Times Square
+- **AR Photo Gallery**: Unlocks after scanning an inside page and automatically jumps to the matched photo when a new page is scanned
+- **Responsive UI**: Loading screen, scanning instructions, and info panels
+- **Mobile-First Design**: Optimized for iOS Safari and Android Chrome
+
+### How to Use AR
+1. Open the website and click "📱 AR Experience" in the navbar
+2. Allow camera access when prompted
+3. Point your phone at the zine cover or Regal Cinemas page
+4. Watch the AR content appear!
+5. Tap on the Regal page to toggle before/after views
+
 ## Technologies Used
 
 - **Three.js**: 3D graphics library for WebGL rendering
 - **OrbitControls**: Camera control system for user interaction
+- **MindAR.js**: Image tracking for AR experience
+- **A-Frame**: Declarative 3D/AR content framework
 - **ES6 Modules**: Modern JavaScript module system
 - **CSS3**: Styling with modern features like backdrop filters
 
@@ -40,13 +61,20 @@ An immersive 3D web experience showcasing the "Temporarily Closed NYC" book with
 
 ```
 temporarily_closed/
-├── index.html              # Main HTML file
-├── style.css              # Styling
-├── app.js                 # Main JavaScript application
-├── package.json           # Project configuration
+├── index.html              # Main HTML file (3D Book)
+├── ar.html                 # AR Experience page
+├── style.css               # Styling for 3D book
+├── ar-style.css            # Styling for AR experience
+├── app.js                  # Main 3D book application
+├── ar-app.js               # AR experience logic
+├── package.json            # Project configuration
 ├── Temporarily_closed_cover.jpg    # Front cover
 ├── Temporarily_closed.jpg          # Back cover
-└── inside_book/           # Book pages
+├── ar-assets/              # AR-specific assets
+│   ├── targets.mind        # Compiled image targets (see setup)
+│   ├── regal-before.jpg    # "Before" image for comparison
+│   └── nyc-ambient.mp3     # Ambient audio (optional)
+└── inside_book/            # Book pages
     ├── Temporarily_close1.jpg
     ├── Temporarily_close2.jpg
     ├── Temporarily_close3.jpg
@@ -145,6 +173,46 @@ To customize the book content:
 1. Replace the cover images (`Temporarily_closed_cover.jpg` and `Temporarily_closed.jpg`)
 2. Replace or add page images in the `inside_book/` directory
 3. Update the `pageFiles` array in `app.js` if you change the page structure
+
+## AR Setup (Required for AR Experience)
+
+The AR experience requires a compiled `.mind` file containing the image targets. Follow these steps:
+
+### Step 1: Compile Image Targets
+
+1. Go to [MindAR Image Target Compiler](https://hiukim.github.io/mind-ar-js-doc/tools/compile)
+2. Upload the following images **in this exact order**:
+   - `Temporarily_closed_cover.jpg` (Target 0 - Cover)
+   - `inside_book/Temporarily_close3.jpg` (Target 1 - Regal Cinemas)
+   - `inside_book/Temporarily_close1.jpg` (Target 2 - NYPL)
+   - `inside_book/Temporarily_close2.jpg` (Target 3 - NYPL Lions)
+   - `inside_book/Temporarily_close3.5.jpg` (Target 4 - NYSE)
+   - `inside_book/Temporarily_close4.jpg` (Target 5 - Wall Street Bull)
+   - `inside_book/Temporarily_close5.jpg` (Target 6 - Times Square)
+   - `inside_book/Temporarily_close6.jpg` (Target 7 - Grand Central)
+   - `inside_book/Temporarily_close7.jpg` (Target 8 - Washington Square Park)
+   - `inside_book/Temporarily_close8.jpg` (Target 9 - 8th Avenue)
+3. Click "Start" to compile
+4. Review the feature visualization (more green dots = better tracking)
+5. Click "Download" to get `targets.mind`
+6. Move the file to `ar-assets/targets.mind`
+
+### Step 2: Test Locally
+
+```bash
+npm run dev
+# Navigate to http://localhost:8080/ar.html on your mobile device
+# (Your device must be on the same network)
+```
+
+### Adding More AR Targets
+
+To add more pages to the AR experience:
+
+1. Add the new image to the MindAR compiler (along with existing images)
+2. Re-download `targets.mind`
+3. Add a new `<a-entity mindar-image-target="targetIndex: N">` in `ar.html`
+4. Add corresponding AR content inside the entity
 
 ## License
 
