@@ -92,7 +92,7 @@
         </div>
 
         <!-- Footer with Learn More -->
-        <div class="ar-gallery-footer">
+        <!-- <div class="ar-gallery-footer">
             <div class="ar-gallery-footer-content">
                 <div class="ar-gallery-footer-text">
                     <h4 id="gallery-footer-title">Regal Cinemas - Times Square</h4>
@@ -100,184 +100,191 @@
                 </div>
                 <a href="https://temporarily-closed.com" target="_blank" class="ar-gallery-learn-btn">Learn More</a>
             </div>
-        </div>
+        </div> -->
 
         <!-- Scan hint -->
-        <div class="ar-gallery-scan-hint">
+        <!-- <div class="ar-gallery-scan-hint">
             <span>Scan another page to jump to a different AR photo</span>
         </div>
-    </div>
+    </div> -->
 
-    <!-- Info Panel (appears when AR content is detected) -->
-    <div id="info-panel" class="info-panel hidden">
-        <div class="info-content">
-            <h2 id="info-title">Location Title</h2>
-            <p id="info-description">Description of the location...</p>
-            <div class="info-actions">
-                <button id="toggle-view-btn" class="info-btn">Show Before</button>
-                <a href="https://temporarily-closed.com" target="_blank" class="info-btn info-btn-secondary">Learn
-                    More</a>
+        <!-- Info Panel (appears when AR content is detected) -->
+        <div id="info-panel" class="info-panel hidden">
+            <div class="info-content">
+                <h2 id="info-title">Location Title</h2>
+                <p id="info-description">Description of the location...</p>
+                <div class="info-actions">
+                    <button id="toggle-view-btn" class="info-btn">Show Before</button>
+                    <a href="https://temporarily-closed.com" target="_blank" class="info-btn info-btn-secondary">Learn
+                        More</a>
+                </div>
             </div>
+            <button id="close-info" class="close-info-btn">&times;</button>
         </div>
-        <button id="close-info" class="close-info-btn">&times;</button>
-    </div>
 
-    <!-- A-Frame AR Scene -->
-    <!-- Note: For multi-target support, compile all images together into one .mind file -->
-    <a-scene mindar-image="imageTargetSrc: ar-assets/targets.mind; maxTrack: 1; filterMinCF: 0.001; filterBeta: 10;"
-        color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true;"
-        vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" loading-screen="enabled: false">
-        <!-- Assets -->
-        <a-assets>
-            <!-- Cover AR content -->
-            <img id="cover-overlay" src="Temporarily_closed_cover.jpg" crossorigin="anonymous">
+        <!-- A-Frame AR Scene -->
+        <!-- Note: For multi-target support, compile all images together into one .mind file -->
+        <a-scene mindar-image="imageTargetSrc: ar-assets/targets.mind; maxTrack: 1; filterMinCF: 0.001; filterBeta: 10;"
+            color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true;"
+            vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+            loading-screen="enabled: false">
+            <!-- Assets -->
+            <a-assets>
+                <!-- Cover AR content -->
+                <img id="cover-overlay" src="Temporarily_closed_cover.jpg" crossorigin="anonymous">
 
-            <!-- AR photo images -->
-            <img id="photo-regal" src="ar-assets/2025-regal_cinema42st.jpg" crossorigin="anonymous">
-            <img id="photo-nypl" src="ar-assets/2025-nypl.jpg" crossorigin="anonymous">
-            <img id="photo-nypl-lyon" src="ar-assets/2025-nypl_lyon.jpg" crossorigin="anonymous">
-            <img id="photo-nyse" src="ar-assets/2025-nyse.jpg" crossorigin="anonymous">
-            <img id="photo-wallst-bull" src="ar-assets/2025-wallst_bull.jpg" crossorigin="anonymous">
-            <img id="photo-timesquare-police" src="ar-assets/2025-timesquare_police.jpg" crossorigin="anonymous">
-            <img id="photo-grandcentral" src="ar-assets/2025-grandcentral.jpg" crossorigin="anonymous">
-            <img id="photo-washingtonsq" src="ar-assets/2025-washingtonsq_park.jpg" crossorigin="anonymous">
-            <img id="photo-8ave" src="ar-assets/2025-8ave.jpg" crossorigin="anonymous">
+                <!-- AR photo images -->
+                <img id="photo-regal" src="ar-assets/2025-regal_cinema42st.jpg" crossorigin="anonymous">
+                <img id="photo-nypl" src="ar-assets/2025-nypl.jpg" crossorigin="anonymous">
+                <img id="photo-nypl-lyon" src="ar-assets/2025-nypl_lyon.jpg" crossorigin="anonymous">
+                <img id="photo-nyse" src="ar-assets/2025-nyse.jpg" crossorigin="anonymous">
+                <img id="photo-wallst-bull" src="ar-assets/2025-wallst_bull.jpg" crossorigin="anonymous">
+                <img id="photo-timesquare-police" src="ar-assets/2025-timesquare_police.jpg" crossorigin="anonymous">
+                <img id="photo-grandcentral" src="ar-assets/2025-grandcentral.jpg" crossorigin="anonymous">
+                <img id="photo-washingtonsq" src="ar-assets/2025-washingtonsq_park.jpg" crossorigin="anonymous">
+                <img id="photo-8ave" src="ar-assets/2025-8ave.jpg" crossorigin="anonymous">
 
-            <!-- Regal comparison image -->
-            <img id="regal-before" src="inside_book/Temporarily_close3.jpg" crossorigin="anonymous">
+                <!-- Regal comparison image -->
+                <img id="regal-before" src="inside_book/Temporarily_close3.jpg" crossorigin="anonymous">
 
-            <!-- Audio (optional placeholder) -->
-            <audio id="nyc-ambient" src="ar-assets/nyc-ambient.mp3" preload="auto" loop></audio>
-        </a-assets>
+                <!-- Audio (optional placeholder) -->
+                <audio id="nyc-ambient" src="ar-assets/nyc-ambient.mp3" preload="auto" loop></audio>
+            </a-assets>
 
-        <!-- Camera -->
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            <!-- Camera -->
+            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <!-- Target 0: Cover -->
-        <a-entity id="target-cover" mindar-image-target="targetIndex: 0">
-            <!-- Animated 3D Title Text -->
-            <a-entity position="0 0.1 0.05">
-                <a-text value="TEMPORARILY" color="#000000" align="center" width="1.2" position="0 0.15 0"
-                    animation="property: position; to: 0 0.18 0; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate"></a-text>
-                <a-text value="CLOSED" color="#000000" align="center" width="1.2" position="0 0.05 0"
-                    animation="property: position; to: 0 0.08 0; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate; delay: 200"></a-text>
-                <a-text value="NYC" color="#C94A36" align="center" width="0.8" position="0.35 -0.05 0"
-                    animation="property: position; to: 0.35 -0.02 0; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate; delay: 400"></a-text>
+            <!-- Target 0: Cover -->
+            <a-entity id="target-cover" mindar-image-target="targetIndex: 0">
+                <!-- Animated 3D Title Text -->
+                <a-entity position="0 0.1 0.05">
+                    <a-text value="TEMPORARILY" color="#000000" align="center" width="1.2" position="0 0.15 0"
+                        animation="property: position; to: 0 0.18 0; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate"></a-text>
+                    <a-text value="CLOSED" color="#000000" align="center" width="1.2" position="0 0.05 0"
+                        animation="property: position; to: 0 0.08 0; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate; delay: 200"></a-text>
+                    <a-text value="NYC" color="#C94A36" align="center" width="0.8" position="0.35 -0.05 0"
+                        animation="property: position; to: 0.35 -0.02 0; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate; delay: 400"></a-text>
+                </a-entity>
+
+                <!-- Subtle glow ring -->
+                <a-ring color="#C94A36" radius-inner="0.4" radius-outer="0.42" position="0 0 0.01" opacity="0.6"
+                    animation="property: rotation; to: 0 0 360; dur: 10000; easing: linear; loop: true"></a-ring>
+
+                <!-- Info button indicator -->
+                <a-circle color="#C94A36" radius="0.05" position="0.4 -0.3 0.02" class="clickable" id="cover-info-btn">
+                    <a-text value="i" color="#FFFFFF" align="center" width="0.3" position="0 0 0.01"></a-text>
+                </a-circle>
             </a-entity>
 
-            <!-- Subtle glow ring -->
-            <a-ring color="#C94A36" radius-inner="0.4" radius-outer="0.42" position="0 0 0.01" opacity="0.6"
-                animation="property: rotation; to: 0 0 360; dur: 10000; easing: linear; loop: true"></a-ring>
+            <!-- Target 1: Regal Cinemas (inside_book/Temporarily_close3.jpg) -->
+            <a-entity id="target-regal" mindar-image-target="targetIndex: 1">
+                <!-- "After" AR photo -->
+                <a-plane id="regal-after-plane" src="#photo-regal" position="0 0 0.01" width="1"
+                    height="0.55"></a-plane>
 
-            <!-- Info button indicator -->
-            <a-circle color="#C94A36" radius="0.05" position="0.4 -0.3 0.02" class="clickable" id="cover-info-btn">
-                <a-text value="i" color="#FFFFFF" align="center" width="0.3" position="0 0 0.01"></a-text>
-            </a-circle>
-        </a-entity>
+                <!-- Before image overlay (hidden by default) -->
+                <a-plane id="regal-before-plane" src="#regal-before" position="0 0 0.02" width="1" height="0.55"
+                    material="opacity: 0; transparent: true" class="before-overlay"></a-plane>
 
-        <!-- Target 1: Regal Cinemas (inside_book/Temporarily_close3.jpg) -->
-        <a-entity id="target-regal" mindar-image-target="targetIndex: 1">
-            <!-- "After" AR photo -->
-            <a-plane id="regal-after-plane" src="#photo-regal" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <!-- Animated border to show AR is active -->
+                <a-entity position="0 0 0.02">
+                    <a-plane color="#C94A36" width="1.05" height="0.02" position="0 0.285 0"
+                        animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate"></a-plane>
+                    <a-plane color="#C94A36" width="1.05" height="0.02" position="0 -0.285 0"
+                        animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate"></a-plane>
+                    <a-plane color="#C94A36" width="0.02" height="0.55" position="0.525 0 0"
+                        animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate; delay: 300"></a-plane>
+                    <a-plane color="#C94A36" width="0.02" height="0.55" position="-0.525 0 0"
+                        animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate; delay: 300"></a-plane>
+                </a-entity>
 
-            <!-- Before image overlay (hidden by default) -->
-            <a-plane id="regal-before-plane" src="#regal-before" position="0 0 0.02" width="1" height="0.55"
-                material="opacity: 0; transparent: true" class="before-overlay"></a-plane>
-
-            <!-- Animated border to show AR is active -->
-            <a-entity position="0 0 0.02">
-                <a-plane color="#C94A36" width="1.05" height="0.02" position="0 0.285 0"
-                    animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate"></a-plane>
-                <a-plane color="#C94A36" width="1.05" height="0.02" position="0 -0.285 0"
-                    animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate"></a-plane>
-                <a-plane color="#C94A36" width="0.02" height="0.55" position="0.525 0 0"
-                    animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate; delay: 300"></a-plane>
-                <a-plane color="#C94A36" width="0.02" height="0.55" position="-0.525 0 0"
-                    animation="property: material.opacity; from: 0.3; to: 1; dur: 1500; easing: easeInOutSine; loop: true; dir: alternate; delay: 300"></a-plane>
+                <!-- "Tap to see before" indicator -->
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.4" height="0.08" opacity="0.7" id="regal-tap-indicator"></a-plane>
+                    <a-text value="TAP TO COMPARE" color="#FFFFFF" align="center" width="0.8"
+                        position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
 
-            <!-- "Tap to see before" indicator -->
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.4" height="0.08" opacity="0.7" id="regal-tap-indicator"></a-plane>
-                <a-text value="TAP TO COMPARE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+            <!-- Target 2 -->
+            <a-entity id="target-nypl" mindar-image-target="targetIndex: 2">
+                <a-plane src="#photo-nypl" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="NYPL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 2 -->
-        <a-entity id="target-nypl" mindar-image-target="targetIndex: 2">
-            <a-plane src="#photo-nypl" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="NYPL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+            <!-- Target 3 -->
+            <a-entity id="target-nypl-lyon" mindar-image-target="targetIndex: 3">
+                <a-plane src="#photo-nypl-lyon" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.64" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="NYPL LIONS" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 3 -->
-        <a-entity id="target-nypl-lyon" mindar-image-target="targetIndex: 3">
-            <a-plane src="#photo-nypl-lyon" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.64" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="NYPL LIONS" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+            <!-- Target 4 -->
+            <a-entity id="target-nyse" mindar-image-target="targetIndex: 4">
+                <a-plane src="#photo-nyse" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="NYSE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 4 -->
-        <a-entity id="target-nyse" mindar-image-target="targetIndex: 4">
-            <a-plane src="#photo-nyse" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="NYSE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+            <!-- Target 5 -->
+            <a-entity id="target-wallst-bull" mindar-image-target="targetIndex: 5">
+                <a-plane src="#photo-wallst-bull" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.72" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="WALL ST BULL" color="#FFFFFF" align="center" width="0.8"
+                        position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 5 -->
-        <a-entity id="target-wallst-bull" mindar-image-target="targetIndex: 5">
-            <a-plane src="#photo-wallst-bull" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.72" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="WALL ST BULL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+            <!-- Target 6 -->
+            <a-entity id="target-timesquare-police" mindar-image-target="targetIndex: 6">
+                <a-plane src="#photo-timesquare-police" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.86" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="TIMES SQUARE" color="#FFFFFF" align="center" width="0.9"
+                        position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 6 -->
-        <a-entity id="target-timesquare-police" mindar-image-target="targetIndex: 6">
-            <a-plane src="#photo-timesquare-police" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.86" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="TIMES SQUARE" color="#FFFFFF" align="center" width="0.9" position="0 0 0.01"></a-text>
+            <!-- Target 7 -->
+            <a-entity id="target-grandcentral" mindar-image-target="targetIndex: 7">
+                <a-plane src="#photo-grandcentral" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.78" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="GRAND CENTRAL" color="#FFFFFF" align="center" width="0.8"
+                        position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 7 -->
-        <a-entity id="target-grandcentral" mindar-image-target="targetIndex: 7">
-            <a-plane src="#photo-grandcentral" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.78" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="GRAND CENTRAL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+            <!-- Target 8 -->
+            <a-entity id="target-washingtonsq" mindar-image-target="targetIndex: 8">
+                <a-plane src="#photo-washingtonsq" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.84" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="WASHINGTON SQ" color="#FFFFFF" align="center" width="0.9"
+                        position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 8 -->
-        <a-entity id="target-washingtonsq" mindar-image-target="targetIndex: 8">
-            <a-plane src="#photo-washingtonsq" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.84" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="WASHINGTON SQ" color="#FFFFFF" align="center" width="0.9" position="0 0 0.01"></a-text>
+            <!-- Target 9 -->
+            <a-entity id="target-8ave" mindar-image-target="targetIndex: 9">
+                <a-plane src="#photo-8ave" position="0 0 0.01" width="1" height="0.55"></a-plane>
+                <a-entity position="0 -0.35 0.02">
+                    <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
+                    <a-text value="8TH AVE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+                </a-entity>
             </a-entity>
-        </a-entity>
 
-        <!-- Target 9 -->
-        <a-entity id="target-8ave" mindar-image-target="targetIndex: 9">
-            <a-plane src="#photo-8ave" position="0 0 0.01" width="1" height="0.55"></a-plane>
-            <a-entity position="0 -0.35 0.02">
-                <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
-                <a-text value="8TH AVE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
-            </a-entity>
-        </a-entity>
+        </a-scene>
 
-    </a-scene>
-
-    <script src="ar-app.js"></script>
+        <script src="ar-app.js"></script>
 </body>
 
 </html>
