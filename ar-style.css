@@ -209,7 +209,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
+    padding: 16px 20px 16px 60px;
+    /* Left padding for back button */
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
 }
@@ -374,7 +375,7 @@ body {
 
 .ar-gallery-photo-container img {
     max-width: 100%;
-    max-height: 55vh;
+    max-height: 70vh;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -764,7 +765,8 @@ body {
 
     /* Gallery mobile adjustments */
     .ar-gallery-header {
-        padding: 12px 16px;
+        padding: 12px 16px 12px 52px;
+        /* Left padding for back button */
     }
 
     .ar-gallery-header h3 {
@@ -808,7 +810,7 @@ body {
     }
 
     .ar-gallery-photo-container img {
-        max-height: 45vh;
+        max-height: 60vh;
     }
 
     .ar-gallery-photo-label {
