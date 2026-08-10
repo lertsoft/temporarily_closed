@@ -1,5 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {
+    MOBILE_BREAKPOINT,
+    SWIPE_CONFIG,
+    BOOK_DIMENSIONS,
+    PAGE_FILES,
+    LINKS
+} from './book-config.js';
 
 class InteractiveBook {
     constructor() {
@@ -22,9 +29,7 @@ class InteractiveBook {
         this.touchState = {
             startX: 0,
             startY: 0,
-            threshold: 50, // Minimum distance for swipe
-            restraint: 100, // Maximum vertical distance for horizontal swipe
-            allowedTime: 300 // Maximum time for swipe
+            ...SWIPE_CONFIG
         };
 
         this.textures = {
@@ -33,17 +38,7 @@ class InteractiveBook {
             pages: []
         };
 
-        this.pageFiles = [
-            'inside_book/Temporarily_close1.jpg',
-            'inside_book/Temporarily_close2.jpg',
-            'inside_book/Temporarily_close3.jpg',
-            'inside_book/Temporarily_close3.5.jpg',
-            'inside_book/Temporarily_close4.jpg',
-            'inside_book/Temporarily_close5.jpg',
-            'inside_book/Temporarily_close6.jpg',
-            'inside_book/Temporarily_close7.jpg',
-            'inside_book/Temporarily_close8.jpg'
-        ];
+        this.pageFiles = PAGE_FILES;
 
         this.init();
     }
@@ -189,10 +184,10 @@ class InteractiveBook {
         this.book = new THREE.Group();
 
         // Book dimensions
-        const bookWidth = 3;
-        const bookHeight = 4;
-        const bookThickness = 0.5;
-        const pageThickness = 0.002;
+        const bookWidth = BOOK_DIMENSIONS.width;
+        const bookHeight = BOOK_DIMENSIONS.height;
+        const bookThickness = BOOK_DIMENSIONS.thickness;
+        const pageThickness = BOOK_DIMENSIONS.pageThickness;
 
         // Create book cover (closed state)
         const coverGeometry = new THREE.BoxGeometry(bookWidth, bookHeight, bookThickness);
@@ -312,7 +307,7 @@ class InteractiveBook {
         this.controls.dampingFactor = 0.05;
         
         // Mobile-responsive controls
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
         this.controls.rotateSpeed = isMobile ? 0.8 : 0.5; // Faster rotation on mobile
         this.controls.minDistance = isMobile ? 2.5 : 3;
         this.controls.maxDistance = isMobile ? 8 : 10;
@@ -329,7 +324,7 @@ class InteractiveBook {
     }
 
     updateControlsForDevice() {
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
         if (this.controls) {
             this.controls.rotateSpeed = isMobile ? 0.8 : 0.5;
             this.controls.minDistance = isMobile ? 2.5 : 3;
@@ -565,6 +560,8 @@ class InteractiveBook {
     }
 
     nextPage() {
+        if (!this.bookState.isOpen || this.bookState.isAnimating) return;
+
         if (this.bookState.currentPage < this.bookState.pages.length - 1) {
             this.animatePageTurn(this.bookState.currentPage, this.bookState.currentPage + 1);
         } else {
@@ -574,6 +571,8 @@ class InteractiveBook {
     }
 
     previousPage() {
+        if (!this.bookState.isOpen || this.bookState.isAnimating) return;
+
         if (this.bookState.currentPage > 0) {
             this.animatePageTurn(this.bookState.currentPage, this.bookState.currentPage - 1);
         }
@@ -595,7 +594,12 @@ class InteractiveBook {
         toPage.material.opacity = 0;
         
         // Create page flip geometry for animation
-        const pageFlipGeometry = new THREE.PlaneGeometry(3 * 0.9, 4 * 0.9, 20, 1);
+        const pageFlipGeometry = new THREE.PlaneGeometry(
+            BOOK_DIMENSIONS.width * 0.9,
+            BOOK_DIMENSIONS.height * 0.9,
+            20,
+            1
+        );
         const pageFlipMaterial = fromPage.material.clone();
         const pageFlip = new THREE.Mesh(pageFlipGeometry, pageFlipMaterial);
         
@@ -700,7 +704,7 @@ class InteractiveBook {
 
     showSwipeHint() {
         // Only show on mobile devices
-        if (window.innerWidth > 768) return;
+        if (window.innerWidth > MOBILE_BREAKPOINT) return;
         
         const swipeHint = document.getElementById('swipe-hint');
         if (swipeHint) {
@@ -737,7 +741,7 @@ class InteractiveBook {
                         <p>You have reached the end of the preview!</p>
                         <p><strong>You can buy this zine now here</strong></p>
                         <div class="popup-actions">
-                            <a href="https://www.etsy.com/listing/1849155237/temporarily-closed-zine-pre-order" target="_blank" class="buy-button">
+                            <a href="${LINKS.buyZine}" target="_blank" rel="noopener noreferrer" class="buy-button">
                                 🛒 Buy Now
                             </a>
                             <button class="continue-reading" id="continue-reading">

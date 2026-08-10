@@ -67,12 +67,15 @@ temporarily_closed/
 ├── ar-style.css            # Styling for AR experience
 ├── app.js                  # Main 3D book application
 ├── ar-app.js               # AR experience logic
+├── book-config.js          # Shared config for 3D book behavior/content
+├── ar-config.js            # Shared config for AR metadata/targets
+├── scripts/
+│   └── smoke-test.mjs      # Basic project smoke test
 ├── package.json            # Project configuration
 ├── Temporarily_closed_cover.jpg    # Front cover
 ├── Temporarily_closed.jpg          # Back cover
 ├── ar-assets/              # AR-specific assets
 │   ├── targets.mind        # Compiled image targets (see setup)
-│   ├── regal-before.jpg    # "Before" image for comparison
 │   └── nyc-ambient.mp3     # Ambient audio (optional)
 └── inside_book/            # Book pages
     ├── Temporarily_close1.jpg
@@ -100,6 +103,11 @@ temporarily_closed/
    npm run dev
    ```
    This will open the project in your default browser at `http://localhost:8080`
+
+3. Run quality checks:
+   ```bash
+   npm run check
+   ```
 
 ### Option 2: Using Python
 

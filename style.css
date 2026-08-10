@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #ffffff;
+    font-family: var(--brand-font);
+    background: var(--brand-paper);
     overflow: hidden;
     cursor: grab;
     -webkit-overflow-scrolling: touch;
@@ -28,9 +28,9 @@ body {
     left: 0;
     right: 0;
     height: 70px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--brand-glass);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--brand-line);
     z-index: 9998;
 }
 
@@ -52,13 +52,13 @@ body {
 .navbar-title h1 {
     font-size: 24px;
     font-weight: 700;
-    color: #333;
+    color: var(--brand-ink);
     letter-spacing: -0.5px;
     transition: color 0.3s ease;
 }
 
 .navbar-title a:hover h1 {
-    color: #e74c3c;
+    color: var(--brand-red);
 }
 
 .navbar-links {
@@ -69,7 +69,7 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: #666;
+    color: var(--brand-muted);
     font-size: 16px;
     font-weight: 500;
     padding: 8px 16px;
@@ -85,7 +85,7 @@ body {
 }
 
 .nav-link-ar {
-    background: linear-gradient(45deg, #8B5CF6, #6D28D9);
+    background: linear-gradient(45deg, var(--brand-violet), var(--brand-violet-deep));
     color: white;
     padding: 10px 20px;
     font-weight: 600;
@@ -601,7 +601,7 @@ body:active {
     }
 
     .control-hint {
-        font-size: 1px;
+        font-size: 11px;
         gap: 4px;
         flex: 1;
         min-width: 90px;

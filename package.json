@@ -5,7 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "npx http-server . -c-1 -p 8080",
-    "dev": "npx http-server . -c-1 -p 8080 -o"
+    "dev": "npx http-server . -c-1 -p 8080 -o",
+    "lint": "node --check app.js && node --check ar-app.js && node --check book-config.js && node --check ar-config.js",
+    "test": "node scripts/smoke-test.mjs",
+    "check": "npm run lint && npm run test"
   },
   "keywords": [
     "threejs",

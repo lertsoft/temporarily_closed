@@ -2,6 +2,11 @@
  * Temporarily Closed NYC - AR Experience
  * MindAR.js Application Logic
  */
+import {
+    TARGET_FILE_CANDIDATES,
+    GALLERY_PHOTO_METADATA,
+    TARGET_METADATA
+} from './ar-config.js';
 
 class ARExperience {
     constructor() {
@@ -12,128 +17,8 @@ class ARExperience {
         this.galleryUnlocked = false;
         this.currentGalleryPhotoId = null;
 
-        this.galleryPhotos = [
-            {
-                id: 'regal',
-                title: 'Regal Cinemas - Times Square',
-                description: 'Times Square theater activity has returned after its pandemic closure.',
-                imageSrc: 'ar-assets/2025-regal_cinema42st.jpg'
-            },
-            {
-                id: 'nypl',
-                title: 'New York Public Library',
-                description: 'Street-level view outside the New York Public Library after reopening.',
-                imageSrc: 'ar-assets/2025-nypl.jpg'
-            },
-            {
-                id: 'nypl-lyon',
-                title: 'NYPL Lions',
-                description: 'Patience and Fortitude outside NYPL in a busier city moment.',
-                imageSrc: 'ar-assets/2025-nypl_lyon.jpg'
-            },
-            {
-                id: 'nyse',
-                title: 'New York Stock Exchange',
-                description: 'Wall Street foot traffic and activity near the NYSE.',
-                imageSrc: 'ar-assets/2025-nyse.jpg'
-            },
-            {
-                id: 'wallst-bull',
-                title: 'Charging Bull',
-                description: 'Lower Manhattan crowds around the iconic Wall Street bull.',
-                imageSrc: 'ar-assets/2025-wallst_bull.jpg'
-            },
-            {
-                id: 'timesquare-police',
-                title: 'Times Square',
-                description: 'A contemporary Times Square street scene with heavy pedestrian flow.',
-                imageSrc: 'ar-assets/2025-timesquare_police.jpg'
-            },
-            {
-                id: 'grandcentral',
-                title: 'Grand Central',
-                description: 'Commuter movement and restored rhythm around Grand Central.',
-                imageSrc: 'ar-assets/2025-grandcentral.jpg'
-            },
-            {
-                id: 'washingtonsq',
-                title: 'Washington Square Park',
-                description: 'Public life and gatherings in Washington Square Park.',
-                imageSrc: 'ar-assets/2025-washingtonsq_park.jpg'
-            },
-            {
-                id: '8ave',
-                title: '8th Avenue',
-                description: 'A reopened 8th Avenue corridor with normal city traffic.',
-                imageSrc: 'ar-assets/2025-8ave.jpg'
-            }
-        ];
-
-        this.targets = [
-            {
-                id: 'cover',
-                entityId: 'target-cover',
-                indicatorLabel: 'Cover Detected',
-                panelTitle: 'Temporarily Closed NYC',
-                panelDescription: 'A photo zine documenting NYC locations temporarily closed during the pandemic. Scan inner pages to open the AR gallery.'
-            },
-            {
-                id: 'regal',
-                entityId: 'target-regal',
-                indicatorLabel: 'Regal Cinemas Detected',
-                galleryPhotoId: 'regal',
-                supportsCompare: true,
-                playAudio: true
-            },
-            {
-                id: 'nypl',
-                entityId: 'target-nypl',
-                indicatorLabel: 'NYPL Detected',
-                galleryPhotoId: 'nypl'
-            },
-            {
-                id: 'nypl-lyon',
-                entityId: 'target-nypl-lyon',
-                indicatorLabel: 'NYPL Lions Detected',
-                galleryPhotoId: 'nypl-lyon'
-            },
-            {
-                id: 'nyse',
-                entityId: 'target-nyse',
-                indicatorLabel: 'NYSE Detected',
-                galleryPhotoId: 'nyse'
-            },
-            {
-                id: 'wallst-bull',
-                entityId: 'target-wallst-bull',
-                indicatorLabel: 'Wall St Bull Detected',
-                galleryPhotoId: 'wallst-bull'
-            },
-            {
-                id: 'timesquare-police',
-                entityId: 'target-timesquare-police',
-                indicatorLabel: 'Times Square Detected',
-                galleryPhotoId: 'timesquare-police'
-            },
-            {
-                id: 'grandcentral',
-                entityId: 'target-grandcentral',
-                indicatorLabel: 'Grand Central Detected',
-                galleryPhotoId: 'grandcentral'
-            },
-            {
-                id: 'washingtonsq',
-                entityId: 'target-washingtonsq',
-                indicatorLabel: 'Washington Sq Detected',
-                galleryPhotoId: 'washingtonsq'
-            },
-            {
-                id: '8ave',
-                entityId: 'target-8ave',
-                indicatorLabel: '8th Ave Detected',
-                galleryPhotoId: '8ave'
-            }
-        ];
+        this.galleryPhotos = this.buildGalleryPhotos();
+        this.targets = this.buildTargets();
 
         this.galleryPhotoMap = new Map(this.galleryPhotos.map((photo) => [photo.id, photo]));
         this.targetMap = new Map(this.targets.map((target) => [target.id, target]));
@@ -159,8 +44,7 @@ class ARExperience {
 
     async resolveTargetsFile() {
         try {
-            const files = ['ar-assets/targets.mind', 'ar-assets/cover.mind', 'ar-assets/target.mind'];
-            for (const file of files) {
+            for (const file of TARGET_FILE_CANDIDATES) {
                 const response = await fetch(file, { method: 'HEAD' });
                 if (response.ok) {
                     console.log(`Found target file: ${file}`);
@@ -171,6 +55,39 @@ class ARExperience {
         } catch (e) {
             return null;
         }
+    }
+
+    buildGalleryPhotos() {
+        return GALLERY_PHOTO_METADATA.map((photoMeta) => ({
+            ...photoMeta,
+            imageSrc: this.resolveGalleryImageSrc(photoMeta.id)
+        }));
+    }
+
+    resolveGalleryImageSrc(photoId) {
+        const imageEl = document.getElementById(`photo-${photoId}`);
+        return imageEl?.getAttribute('src') || '';
+    }
+
+    buildTargets() {
+        const targetEntities = Array.from(
+            document.querySelectorAll('a-entity[mindar-image-target][id^="target-"]')
+        );
+
+        return targetEntities.map((entity) => {
+            const id = entity.id.replace(/^target-/, '');
+            const metadata = TARGET_METADATA[id] || {};
+            const defaultIndicator = `${id.toUpperCase()} Detected`;
+            const hasMatchingPhoto = this.galleryPhotos.some((photo) => photo.id === id);
+
+            return {
+                id,
+                entityId: entity.id,
+                galleryPhotoId: metadata.galleryPhotoId || (hasMatchingPhoto ? id : null),
+                ...metadata,
+                indicatorLabel: metadata.indicatorLabel || defaultIndicator
+            };
+        });
     }
 
     configureSceneTargets(targetFile) {
@@ -201,7 +118,7 @@ class ARExperience {
                     <div class="error-solutions">
                         <p><strong>To complete setup:</strong></p>
                         <ol style="text-align: left; padding-left: 20px; color: rgba(255,255,255,0.7); font-size: 13px;">
-                            <li style="padding: 4px 0;">Go to <a href="https://hiukim.github.io/mind-ar-js-doc/tools/compile" target="_blank" style="color: #C94A36;">MindAR Compiler</a></li>
+                            <li style="padding: 4px 0;">Go to <a href="https://hiukim.github.io/mind-ar-js-doc/tools/compile" target="_blank" rel="noopener noreferrer" style="color: #C94A36;">MindAR Compiler</a></li>
                             <li style="padding: 4px 0;">Upload the zine images</li>
                             <li style="padding: 4px 0;">Download <code>targets.mind</code></li>
                             <li style="padding: 4px 0;">Place it in <code>ar-assets/</code> folder</li>
@@ -223,12 +140,13 @@ class ARExperience {
             console.log('A-Frame scene loaded');
             this.setupTargetListeners();
             this.setupUIListeners();
+            this.setupAudioUnlock();
             this.setupGallery();
-            this.hideLoadingScreen();
         });
 
         scene.addEventListener('arReady', () => {
             console.log('MindAR ready');
+            this.hideLoadingScreen();
             this.showScanInstructions();
         });
 
@@ -345,6 +263,17 @@ class ARExperience {
                 this.toggleRegalBeforeAfter();
             }
         });
+    }
+
+    setupAudioUnlock() {
+        const unlockAudio = () => {
+            this.enableAudio();
+            document.removeEventListener('pointerdown', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+        };
+
+        document.addEventListener('pointerdown', unlockAudio, { once: true });
+        document.addEventListener('touchstart', unlockAudio, { once: true });
     }
 
     setupGallery() {
@@ -482,8 +411,7 @@ class ARExperience {
     toggleRegalBeforeAfter() {
         const beforePlane = document.getElementById('regal-before-plane');
         const toggleBtn = document.getElementById('toggle-view-btn');
-        const tapIndicator = document.getElementById('regal-tap-indicator');
-        const tapText = tapIndicator?.querySelector('a-text');
+        const tapText = document.getElementById('regal-tap-text');
 
         if (!beforePlane) {
             return;
@@ -531,6 +459,11 @@ class ARExperience {
         const toggleBtn = document.getElementById('toggle-view-btn');
         if (toggleBtn) {
             toggleBtn.textContent = 'Show Before';
+        }
+
+        const tapText = document.getElementById('regal-tap-text');
+        if (tapText) {
+            tapText.setAttribute('value', 'TAP TO COMPARE');
         }
     }
 

@@ -11,17 +11,31 @@
     <!-- MindAR Image Tracking -->
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+    <link rel="stylesheet" href="brand.css">
     <link rel="stylesheet" href="ar-style.css">
 </head>
 
 <body>
-    <!-- Back Button -->
-    <a href="index.html" class="back-btn" title="Back to Book">←</a>
+    <nav class="navbar ar-navbar" aria-label="AR experience navigation">
+        <div class="navbar-content">
+            <div class="navbar-title">
+                <a href="index.html" aria-label="Back to the interactive book">
+                    <span class="ar-back-icon" aria-hidden="true">←</span>
+                    <h1>Temporarily Closed</h1>
+                </a>
+            </div>
+            <span class="ar-mode-pill"><span aria-hidden="true">●</span> AR Experience</span>
+        </div>
+    </nav>
 
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-content">
-            <div class="loading-spinner"></div>
+            <div class="book-loader" aria-hidden="true">
+                <div class="book-page"></div>
+                <div class="book-page"></div>
+                <div class="book-page"></div>
+            </div>
             <h1>Temporarily Closed</h1>
             <p class="loading-subtitle">NYC AR Experience</p>
             <p class="loading-status">Initializing camera...</p>
@@ -49,7 +63,7 @@
             </div>
             <div class="ar-gallery-controls">
                 <!-- Camera button - return to AR scanning -->
-                <button id="gallery-camera-btn" class="ar-gallery-btn camera-btn" title="Return to Camera">
+                <button type="button" id="gallery-camera-btn" class="ar-gallery-btn camera-btn" title="Return to Camera" aria-label="Return to camera">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -58,7 +72,7 @@
                     </svg>
                 </button>
                 <!-- Close button -->
-                <button id="gallery-close-btn" class="ar-gallery-btn" title="Close Gallery">
+                <button type="button" id="gallery-close-btn" class="ar-gallery-btn" title="Close Gallery" aria-label="Close gallery">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -81,7 +95,7 @@
                     <p id="gallery-photo-description">Times Square theater activity has returned after its pandemic
                         closure.</p>
                 </div>
-                <button id="gallery-fullscreen-btn" class="ar-gallery-fullscreen-btn" title="Toggle Fullscreen">
+                <button type="button" id="gallery-fullscreen-btn" class="ar-gallery-fullscreen-btn" title="Toggle Fullscreen" aria-label="Toggle photo fullscreen">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -98,12 +112,12 @@
             <h2 id="info-title">Location Title</h2>
             <p id="info-description">Description of the location...</p>
             <div class="info-actions">
-                <button id="toggle-view-btn" class="info-btn">Show Before</button>
-                <a href="https://temporarily-closed.com" target="_blank" class="info-btn info-btn-secondary">Learn
+                <button type="button" id="toggle-view-btn" class="info-btn">Show Before</button>
+                <a href="https://temporarily-closed.com" target="_blank" rel="noopener noreferrer" class="info-btn info-btn-secondary">Learn
                     More</a>
             </div>
         </div>
-        <button id="close-info" class="close-info-btn">&times;</button>
+        <button type="button" id="close-info" class="close-info-btn" aria-label="Close information panel">&times;</button>
     </div>
 
     <!-- A-Frame AR Scene -->
@@ -183,7 +197,7 @@
             <!-- "Tap to see before" indicator -->
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.4" height="0.08" opacity="0.7" id="regal-tap-indicator"></a-plane>
-                <a-text value="TAP TO COMPARE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+                <a-text id="regal-tap-text" value="TAP TO COMPARE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
             </a-entity>
         </a-entity>
 
@@ -261,7 +275,7 @@
 
     </a-scene>
 
-    <script src="ar-app.js"></script>
+    <script type="module" src="ar-app.js"></script>
 </body>
 
 </html>
