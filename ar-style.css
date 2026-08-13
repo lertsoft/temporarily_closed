@@ -166,6 +166,58 @@ body {
 .loading-status {
     color: rgba(255, 255, 255, 0.55);
     font-size: 13px;
+    line-height: 1.5;
+    transition: color 0.25s ease;
+}
+
+.loading-status.error {
+    color: #ff7568;
+}
+
+.loading-actions {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.loading-retry-btn,
+.loading-back-link {
+    min-width: 120px;
+    padding: 11px 18px;
+    border-radius: var(--brand-pill);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.25s var(--brand-ease), box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.loading-retry-btn {
+    border: 0;
+    background: linear-gradient(45deg, var(--brand-violet), var(--brand-violet-deep));
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.28);
+}
+
+.loading-back-link {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.loading-retry-btn:hover,
+.loading-back-link:hover {
+    transform: translateY(-2px);
+}
+
+.loading-retry-btn:hover {
+    box-shadow: 0 7px 20px rgba(139, 92, 246, 0.36);
+}
+
+.loading-back-link:hover {
+    background: rgba(255, 255, 255, 0.14);
 }
 
 /* Camera scanning state. */

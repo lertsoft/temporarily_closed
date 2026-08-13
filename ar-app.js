@@ -11,6 +11,11 @@ import {
 class ARExperience {
     constructor() {
         this.isLoaded = false;
+        this.hasStarted = false;
+        this.sceneSetupComplete = false;
+        this.scene = null;
+        this.arSystem = null;
+        this.startupTimers = [];
         this.activeTarget = null;
         this.regalShowingBefore = false;
         this.audioEnabled = false;
@@ -32,6 +37,16 @@ class ARExperience {
             return;
         }
 
+        this.scene = document.querySelector('a-scene');
+        if (!this.scene) {
+            this.showError('The AR scene could not be initialized.', { showRetry: true });
+            return;
+        }
+
+        // Register lifecycle listeners before any asynchronous work or AR startup.
+        // This prevents fast/cached loads from firing arReady before we are listening.
+        this.setupARScene(this.scene);
+
         const targetFile = await this.resolveTargetsFile();
         if (!targetFile) {
             this.showMissingTargetsError();
@@ -39,22 +54,24 @@ class ARExperience {
         }
 
         this.configureSceneTargets(targetFile);
-        this.setupARScene();
+        await this.waitForSceneLoaded(this.scene);
+        this.onSceneLoaded();
+        this.startAR();
     }
 
     async resolveTargetsFile() {
-        try {
-            for (const file of TARGET_FILE_CANDIDATES) {
+        for (const file of TARGET_FILE_CANDIDATES) {
+            try {
                 const response = await fetch(file, { method: 'HEAD' });
                 if (response.ok) {
                     console.log(`Found target file: ${file}`);
                     return file;
                 }
+            } catch (error) {
+                console.warn(`Unable to check target file: ${file}`, error);
             }
-            return null;
-        } catch (e) {
-            return null;
         }
+        return null;
     }
 
     buildGalleryPhotos() {
@@ -98,11 +115,12 @@ class ARExperience {
 
         scene.setAttribute(
             'mindar-image',
-            `imageTargetSrc: ${targetFile}; maxTrack: 1; filterMinCF: 0.001; filterBeta: 10;`
+            `imageTargetSrc: ${targetFile}; maxTrack: 1; filterMinCF: 0.001; filterBeta: 10; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;`
         );
     }
 
     showMissingTargetsError() {
+        this.clearStartupTimers();
         const loading = document.getElementById('loading-screen');
         const content = loading?.querySelector('.loading-content');
 
@@ -130,20 +148,7 @@ class ARExperience {
         }
     }
 
-    setupARScene() {
-        const scene = document.querySelector('a-scene');
-        if (!scene) {
-            return;
-        }
-
-        scene.addEventListener('loaded', () => {
-            console.log('A-Frame scene loaded');
-            this.setupTargetListeners();
-            this.setupUIListeners();
-            this.setupAudioUnlock();
-            this.setupGallery();
-        });
-
+    setupARScene(scene) {
         scene.addEventListener('arReady', () => {
             console.log('MindAR ready');
             this.hideLoadingScreen();
@@ -152,14 +157,120 @@ class ARExperience {
 
         scene.addEventListener('arError', (e) => {
             console.error('AR Error:', e);
-            this.showError('Camera access denied or AR not supported');
+            this.showError(
+                'The camera could not start. Check Safari camera access, then try again.',
+                { showRetry: true }
+            );
         });
 
-        setTimeout(() => {
+        const retryButton = document.getElementById('retry-ar-btn');
+        retryButton?.addEventListener('click', () => {
+            window.location.reload();
+        });
+    }
+
+    waitForSceneLoaded(scene) {
+        if (scene.hasLoaded) {
+            return Promise.resolve();
+        }
+
+        return new Promise((resolve) => {
+            scene.addEventListener('loaded', resolve, { once: true });
+        });
+    }
+
+    onSceneLoaded() {
+        if (this.sceneSetupComplete) {
+            return;
+        }
+
+        this.sceneSetupComplete = true;
+        this.arSystem = this.scene?.systems?.['mindar-image-system'] || null;
+
+        console.log('A-Frame scene loaded');
+        this.setupTargetListeners();
+        this.setupUIListeners();
+        this.setupAudioUnlock();
+        this.setupGallery();
+    }
+
+    startAR() {
+        if (this.hasStarted || this.isLoaded) {
+            return;
+        }
+
+        if (!this.arSystem) {
+            this.showError('The AR camera system is unavailable.', { showRetry: true });
+            return;
+        }
+
+        this.hasStarted = true;
+        this.updateLoadingStatus('Requesting camera access...');
+        this.scheduleStartupProgress();
+
+        try {
+            this.arSystem.start();
+        } catch (error) {
+            console.error('Unable to start MindAR:', error);
+            this.showError('The camera could not start. Please try again.', { showRetry: true });
+        }
+    }
+
+    scheduleStartupProgress() {
+        this.clearStartupTimers();
+
+        this.startupTimers.push(window.setTimeout(() => {
             if (!this.isLoaded) {
-                this.showError('AR is taking too long to load. Try refreshing the page.');
+                this.updateLoadingStatus('Loading AR targets...');
             }
-        }, 15000);
+        }, 8000));
+
+        this.startupTimers.push(window.setTimeout(() => {
+            if (!this.isLoaded) {
+                this.updateLoadingStatus('Preparing image tracking. The first visit can take a moment...');
+            }
+        }, 25000));
+
+        this.startupTimers.push(window.setTimeout(() => {
+            if (this.isLoaded) {
+                return;
+            }
+
+            if (this.isCameraLive()) {
+                this.updateLoadingStatus('Camera is on. Finishing AR setup...');
+                this.showLoadingActions();
+            } else {
+                this.showError(
+                    'The camera has not started. Check Safari camera access, then try again.',
+                    { showRetry: true }
+                );
+            }
+        }, 60000));
+    }
+
+    clearStartupTimers() {
+        this.startupTimers.forEach((timerId) => window.clearTimeout(timerId));
+        this.startupTimers = [];
+    }
+
+    isCameraLive() {
+        const video = this.scene?.parentNode?.querySelector('video');
+        const track = video?.srcObject?.getVideoTracks?.()[0];
+        return Boolean(track && track.readyState === 'live' && video.readyState >= 2);
+    }
+
+    updateLoadingStatus(message, { isError = false } = {}) {
+        const status = document.querySelector('#loading-screen .loading-status');
+        if (!status) {
+            return;
+        }
+
+        status.textContent = message;
+        status.classList.toggle('error', isError);
+    }
+
+    showLoadingActions() {
+        document.getElementById('loading-actions')?.classList.remove('hidden');
     }
 
     checkHTTPSRequirement() {
@@ -598,6 +709,7 @@ class ARExperience {
     }
 
     hideLoadingScreen() {
+        this.clearStartupTimers();
         const loading = document.getElementById('loading-screen');
         if (loading) {
             loading.classList.add('hidden');
@@ -605,12 +717,11 @@ class ARExperience {
         }
     }
 
-    showError(message) {
-        const loading = document.getElementById('loading-screen');
-        const status = loading?.querySelector('.loading-status');
-        if (status) {
-            status.textContent = message;
-            status.style.color = '#C94A36';
+    showError(message, { showRetry = false } = {}) {
+        this.clearStartupTimers();
+        this.updateLoadingStatus(message, { isError: true });
+        if (showRetry) {
+            this.showLoadingActions();
         }
     }
 
@@ -642,7 +753,14 @@ class ARExperience {
     }
 }
 
-// Initialize on DOM ready
-document.addEventListener('DOMContentLoaded', () => {
+function initializeARExperience() {
     window.arExperience = new ARExperience();
-});
+}
+
+// Module scripts normally run before DOMContentLoaded, but cached/deferred loads can
+// execute later. Support both paths so initialization is never silently skipped.
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeARExperience, { once: true });
+} else {
+    initializeARExperience();
+}

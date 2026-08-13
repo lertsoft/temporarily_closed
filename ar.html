@@ -7,12 +7,12 @@
     <title>Temporarily Closed NYC - AR Experience</title>
 
     <!-- A-Frame -->
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <!-- MindAR Image Tracking -->
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <link rel="stylesheet" href="brand.css">
-    <link rel="stylesheet" href="ar-style.css">
+    <link rel="stylesheet" href="ar-style.css?v=20260810">
 </head>
 
 <body>
@@ -38,7 +38,11 @@
             </div>
             <h1>Temporarily Closed</h1>
             <p class="loading-subtitle">NYC AR Experience</p>
-            <p class="loading-status">Initializing camera...</p>
+            <p class="loading-status" role="status" aria-live="polite">Preparing AR...</p>
+            <div id="loading-actions" class="loading-actions hidden">
+                <button type="button" id="retry-ar-btn" class="loading-retry-btn">Try again</button>
+                <a href="index.html" class="loading-back-link">Back to the book</a>
+            </div>
         </div>
     </div>
 
@@ -89,7 +93,7 @@
         <!-- Main photo display -->
         <div class="ar-gallery-main">
             <div class="ar-gallery-photo-container">
-                <img id="gallery-main-image" src="ar-assets/2025-regal_cinema42st.jpg" alt="Active AR photo">
+                <img id="gallery-main-image" src="ar-assets/display/2025-regal_cinema42st.jpg" alt="Active AR photo">
                 <div class="ar-gallery-photo-label">
                     <h2 id="gallery-photo-title">Regal Cinemas</h2>
                     <p id="gallery-photo-description">Times Square theater activity has returned after its pandemic
@@ -122,30 +126,29 @@
 
     <!-- A-Frame AR Scene -->
     <!-- Note: For multi-target support, compile all images together into one .mind file -->
-    <a-scene mindar-image="imageTargetSrc: ar-assets/targets.mind; maxTrack: 1; filterMinCF: 0.001; filterBeta: 10;"
-        color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true;"
+    <a-scene color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true;"
         vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" loading-screen="enabled: false">
         <!-- Assets -->
-        <a-assets>
+        <a-assets timeout="30000">
             <!-- Cover AR content -->
             <img id="cover-overlay" src="Temporarily_closed_cover.jpg" crossorigin="anonymous">
 
             <!-- AR photo images -->
-            <img id="photo-regal" src="ar-assets/2025-regal_cinema42st.jpg" crossorigin="anonymous">
-            <img id="photo-nypl" src="ar-assets/2025-nypl.jpg" crossorigin="anonymous">
-            <img id="photo-nypl-lyon" src="ar-assets/2025-nypl_lyon.jpg" crossorigin="anonymous">
-            <img id="photo-nyse" src="ar-assets/2025-nyse.jpg" crossorigin="anonymous">
-            <img id="photo-wallst-bull" src="ar-assets/2025-wallst_bull.jpg" crossorigin="anonymous">
-            <img id="photo-timesquare-police" src="ar-assets/2025-timesquare_police.jpg" crossorigin="anonymous">
-            <img id="photo-grandcentral" src="ar-assets/2025-grandcentral.jpg" crossorigin="anonymous">
-            <img id="photo-washingtonsq" src="ar-assets/2025-washingtonsq_park.jpg" crossorigin="anonymous">
-            <img id="photo-8ave" src="ar-assets/2025-8ave.jpg" crossorigin="anonymous">
+            <img id="photo-regal" src="ar-assets/display/2025-regal_cinema42st.jpg" crossorigin="anonymous">
+            <img id="photo-nypl" src="ar-assets/display/2025-nypl.jpg" crossorigin="anonymous">
+            <img id="photo-nypl-lyon" src="ar-assets/display/2025-nypl_lyon.jpg" crossorigin="anonymous">
+            <img id="photo-nyse" src="ar-assets/display/2025-nyse.jpg" crossorigin="anonymous">
+            <img id="photo-wallst-bull" src="ar-assets/display/2025-wallst_bull.jpg" crossorigin="anonymous">
+            <img id="photo-timesquare-police" src="ar-assets/display/2025-timesquare_police.jpg" crossorigin="anonymous">
+            <img id="photo-grandcentral" src="ar-assets/display/2025-grandcentral.jpg" crossorigin="anonymous">
+            <img id="photo-washingtonsq" src="ar-assets/display/2025-washingtonsq_park.jpg" crossorigin="anonymous">
+            <img id="photo-8ave" src="ar-assets/display/2025-8ave.jpg" crossorigin="anonymous">
 
             <!-- Regal comparison image -->
             <img id="regal-before" src="inside_book/Temporarily_close3.jpg" crossorigin="anonymous">
 
             <!-- Audio (optional placeholder) -->
-            <audio id="nyc-ambient" src="ar-assets/nyc-ambient.mp3" preload="auto" loop></audio>
+            <audio id="nyc-ambient" src="ar-assets/nyc-ambient.mp3" preload="none" loop></audio>
         </a-assets>
 
         <!-- Camera -->
@@ -275,7 +278,7 @@
 
     </a-scene>
 
-    <script type="module" src="ar-app.js"></script>
+    <script type="module" src="ar-app.js?v=20260810"></script>
 </body>
 
 </html>
