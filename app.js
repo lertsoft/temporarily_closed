@@ -4,9 +4,8 @@ import {
     MOBILE_BREAKPOINT,
     SWIPE_CONFIG,
     BOOK_DIMENSIONS,
-    PAGE_FILES,
-    LINKS
-} from './book-config.js';
+    PAGE_FILES
+} from './book-config.js?v=20260925';
 
 class InteractiveBook {
     constructor() {
@@ -39,8 +38,16 @@ class InteractiveBook {
         };
 
         this.pageFiles = PAGE_FILES;
-
-        this.init();
+        this.pointerStart = null;
+        this.wasDragging = false;
+        this.init().catch((error) => {
+            console.error('The book preview could not load:', error);
+            document.querySelector('#loading-screen .loader')?.replaceChildren(
+                Object.assign(document.createElement('p'), {
+                    textContent: 'The interactive preview could not load. Please refresh the page or use the purchase link above.'
+                })
+            );
+        });
     }
 
     async init() {
@@ -79,17 +86,13 @@ class InteractiveBook {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap at 2x for performance
         
-        // Enhanced shadow settings
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        // The soft contact shadow is drawn with a small gradient texture.
+        this.renderer.shadowMap.enabled = false;
         
         // Better color and tone mapping
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.2;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-        
-        // Enable shadow auto-update
-        this.renderer.shadowMap.autoUpdate = true;
         
         const container = document.getElementById('canvas-container');
         container.appendChild(this.renderer.domElement);
@@ -103,16 +106,6 @@ class InteractiveBook {
         // Main directional light - increased intensity
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
         dirLight.position.set(5, 10, 5);
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.near = 0.1;
-        dirLight.shadow.camera.far = 50;
-        dirLight.shadow.camera.left = -10;
-        dirLight.shadow.camera.right = 10;
-        dirLight.shadow.camera.top = 10;
-        dirLight.shadow.camera.bottom = -10;
-        dirLight.shadow.mapSize.width = 4096; // Higher quality shadows
-        dirLight.shadow.mapSize.height = 4096;
-        dirLight.shadow.bias = -0.0001;
         this.scene.add(dirLight);
 
         // Brighter fill light from opposite side
@@ -286,18 +279,23 @@ class InteractiveBook {
     }
 
     createGroundPlane() {
-        // Create invisible ground plane for realistic shadows
-        const groundGeometry = new THREE.PlaneGeometry(20, 20);
-        const groundMaterial = new THREE.ShadowMaterial({
-            opacity: 0.3
-        });
-        
-        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        ground.rotation.x = -Math.PI / 2; // Rotate to be horizontal
-        ground.position.y = -2.5; // Position below the book
-        ground.receiveShadow = true;
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 128;
+        const context = canvas.getContext('2d');
+        const gradient = context.createRadialGradient(64, 64, 10, 64, 64, 64);
+        gradient.addColorStop(0, 'rgba(25, 23, 32, 0.3)');
+        gradient.addColorStop(0.45, 'rgba(25, 23, 32, 0.13)');
+        gradient.addColorStop(1, 'rgba(25, 23, 32, 0)');
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, 128, 128);
+
+        const ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(5.5, 3.8),
+            new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true, depthWrite: false })
+        );
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -2.35;
         ground.name = 'ground';
-        
         this.scene.add(ground);
     }
 
@@ -340,6 +338,16 @@ class InteractiveBook {
         // Mouse events
         this.renderer.domElement.addEventListener('click', (event) => this.onMouseClick(event));
         this.renderer.domElement.addEventListener('mousemove', (event) => this.onMouseMove(event));
+        this.renderer.domElement.addEventListener('pointerdown', (event) => {
+            this.pointerStart = { x: event.clientX, y: event.clientY };
+            this.wasDragging = false;
+        });
+        this.renderer.domElement.addEventListener('pointermove', (event) => {
+            if (this.pointerStart && Math.hypot(event.clientX - this.pointerStart.x, event.clientY - this.pointerStart.y) > 6) {
+                this.wasDragging = true;
+            }
+        });
+        this.renderer.domElement.addEventListener('pointerup', () => { this.pointerStart = null; });
 
         // Keyboard events
         window.addEventListener('keydown', (event) => this.onKeyDown(event));
@@ -347,6 +355,11 @@ class InteractiveBook {
         // Navigation arrow events
         document.getElementById('prev-arrow').addEventListener('click', () => this.previousPage());
         document.getElementById('next-arrow').addEventListener('click', () => this.nextPage());
+        document.getElementById('toggle-book').addEventListener('click', () => {
+            if (this.bookState.isAnimating) return;
+            if (this.bookState.isOpen) this.closeBook();
+            else this.openBook();
+        });
 
         // Touch/swipe events for mobile
         this.setupTouchEvents();
@@ -431,7 +444,7 @@ class InteractiveBook {
     }
 
     onMouseClick(event) {
-        if (this.bookState.isAnimating) return;
+        if (this.bookState.isAnimating || this.wasDragging) return;
 
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -467,6 +480,7 @@ class InteractiveBook {
     async openBook() {
         this.bookState.isAnimating = true;
         this.bookState.isOpen = true;
+        const openingRotation = Math.atan2(Math.sin(this.book.rotation.y), Math.cos(this.book.rotation.y));
 
         // Hide the cover
         const cover = this.book.getObjectByName('bookCover');
@@ -481,6 +495,7 @@ class InteractiveBook {
             
             // Easing function
             const easeProgress = 1 - Math.pow(1 - progress, 3);
+            this.book.rotation.y = openingRotation * (1 - easeProgress);
             
             // Fade out cover
             cover.material.forEach(mat => {
@@ -501,6 +516,7 @@ class InteractiveBook {
                 this.updatePageIndicator();
                 this.showNavigationArrows();
                 this.showSwipeHint();
+                this.updateBookButton();
             }
         };
         
@@ -540,6 +556,7 @@ class InteractiveBook {
                 this.updatePageIndicator();
                 this.hideNavigationArrows();
                 this.hideSwipeHint();
+                this.updateBookButton();
             }
         };
         
@@ -587,9 +604,6 @@ class InteractiveBook {
         const fromPage = this.bookState.pages[fromIndex];
         const toPage = this.bookState.pages[toIndex];
         
-        // Check if we're going to the beginning (end of book reached)
-        const isLooping = fromIndex === this.bookState.pages.length - 1 && toIndex === 0;
-        
         toPage.visible = true;
         toPage.material.opacity = 0;
         
@@ -600,6 +614,7 @@ class InteractiveBook {
             20,
             1
         );
+        const originalPositions = pageFlipGeometry.attributes.position.array.slice();
         const pageFlipMaterial = fromPage.material.clone();
         const pageFlip = new THREE.Mesh(pageFlipGeometry, pageFlipMaterial);
         
@@ -621,8 +636,7 @@ class InteractiveBook {
             // Page flip animation
             const vertices = pageFlipGeometry.attributes.position.array;
             for (let i = 0; i < vertices.length; i += 3) {
-                const x = vertices[i];
-                const originalX = x;
+                const originalX = originalPositions[i];
                 
                 // Create wave effect for page turning
                 const waveIntensity = Math.sin(progress * Math.PI) * 0.5;
@@ -654,11 +668,6 @@ class InteractiveBook {
                 this.bookState.isAnimating = false;
                 this.updatePageIndicator();
                 this.updateNavigationArrows();
-                
-                // Show popup if we looped back to beginning
-                if (isLooping) {
-                    this.showPurchasePopup();
-                }
             }
         };
         
@@ -672,6 +681,10 @@ class InteractiveBook {
         } else {
             indicator.textContent = `Page ${this.bookState.currentPage + 1} of ${this.bookState.pages.length}`;
         }
+    }
+
+    updateBookButton() {
+        document.getElementById('toggle-book').textContent = this.bookState.isOpen ? 'Close preview' : 'Open preview';
     }
 
     showNavigationArrows() {
@@ -721,64 +734,6 @@ class InteractiveBook {
         const swipeHint = document.getElementById('swipe-hint');
         if (swipeHint) {
             swipeHint.classList.remove('show');
-        }
-    }
-
-    showPurchasePopup() {
-        // Create popup if it doesn't exist
-        let popup = document.getElementById('purchase-popup');
-        if (!popup) {
-            popup = document.createElement('div');
-            popup.id = 'purchase-popup';
-            popup.className = 'purchase-popup';
-            popup.innerHTML = `
-                <div class="popup-content">
-                    <div class="popup-header">
-                        <h2>📖 Enjoyed the zine?</h2>
-                        <button class="close-popup" id="close-popup">&times;</button>
-                    </div>
-                    <div class="popup-body">
-                        <p>You have reached the end of the preview!</p>
-                        <p><strong>You can buy this zine now here</strong></p>
-                        <div class="popup-actions">
-                            <a href="${LINKS.buyZine}" target="_blank" rel="noopener noreferrer" class="buy-button">
-                                🛒 Buy Now
-                            </a>
-                            <button class="continue-reading" id="continue-reading">
-                                📚 Continue Reading
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(popup);
-
-            // Add event listeners
-            document.getElementById('close-popup').addEventListener('click', () => this.hidePurchasePopup());
-            document.getElementById('continue-reading').addEventListener('click', () => this.hidePurchasePopup());
-            
-            // Close on backdrop click
-            popup.addEventListener('click', (e) => {
-                if (e.target === popup) {
-                    this.hidePurchasePopup();
-                }
-            });
-        }
-
-        // Show popup with animation
-        popup.style.display = 'flex';
-        setTimeout(() => {
-            popup.classList.add('show');
-        }, 10);
-    }
-
-    hidePurchasePopup() {
-        const popup = document.getElementById('purchase-popup');
-        if (popup) {
-            popup.classList.remove('show');
-            setTimeout(() => {
-                popup.style.display = 'none';
-            }, 300);
         }
     }
 

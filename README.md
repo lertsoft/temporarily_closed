@@ -22,7 +22,7 @@ An immersive 3D web experience showcasing the "Temporarily Closed NYC" book with
   - **Responsive Camera Controls**: Adjusted zoom and rotation speeds for touch interaction
 - **Realistic Page Flipping**: 3D animated page turns with wave effects that simulate real paper
 - **Auto-Loop**: When reaching the last page, automatically loops back to the beginning
-- **Purchase Popup**: Beautiful modal appears when cycling through all pages with call-to-action
+- **Direct Purchase Link**: Buy the zine opens the Stripe-hosted checkout after an explicit click
 - **Enhanced Brightness & Quality**: Optimized lighting and high-quality texture rendering
 - **Smart UI Elements**: Navigation arrows appear only when book is open, with disabled states
 - **Smooth Animations**: Book opening/closing and advanced page turning animations
@@ -37,16 +37,16 @@ Point your phone's camera at pages in the physical zine to unlock augmented real
 - **Image Target Tracking**: Uses MindAR.js for real-time image recognition
 - **Cover Detection**: Animated 3D title floats above the cover
 - **Regal Cinemas Page**: Before/after comparison - tap to toggle between "Temporarily Closed" and a bustling Times Square
-- **AR Photo Gallery**: Unlocks after scanning an inside page and automatically jumps to the matched photo when a new page is scanned
+- **AR Photo Gallery**: Unlocks after scanning an inside page; select View Photo to open it, and it follows newly scanned pages
 - **Responsive UI**: Loading screen, scanning instructions, and info panels
 - **Mobile-First Design**: Optimized for iOS Safari and Android Chrome
 
 ### How to Use AR
 1. Open the website and click "📱 AR Experience" in the navbar
 2. Allow camera access when prompted
-3. Point your phone at the zine cover or Regal Cinemas page
+3. Point your phone at the zine cover or any inside page
 4. Watch the AR content appear!
-5. Tap on the Regal page to toggle before/after views
+5. Tap on the Regal page to toggle before/after views, or select View Photo to open the gallery
 
 ## Technologies Used
 
@@ -63,6 +63,7 @@ Point your phone's camera at pages in the physical zine to unlock augmented real
 temporarily_closed/
 ├── index.html              # Main HTML file (3D Book)
 ├── ar.html                 # AR Experience page
+├── success.html            # Post-purchase confirmation page (Payment Link redirect)
 ├── style.css               # Styling for 3D book
 ├── ar-style.css            # Styling for AR experience
 ├── app.js                  # Main 3D book application
@@ -102,14 +103,14 @@ temporarily_closed/
    ```bash
    npm run dev
    ```
-   This will open the project in your default browser at `http://localhost:8080`
+   Open `http://localhost:8080` in your browser.
 
 3. Run quality checks:
    ```bash
    npm run check
    ```
 
-### Option 2: Using Python
+### Option 2: Static preview using Python
 
 If you have Python installed, you can use its built-in server:
 
@@ -148,9 +149,8 @@ The project uses ES6 modules, so it needs to be served via HTTP (not just opened
 - **Visual Arrow Buttons**: Click/tap the ← → arrows that appear beside the book
 - **Navigation Bar**: 
   - **"Temporarily Closed"**: Click/tap title to return to cover
-  - **"Buy the book"**: Direct link to purchase page
+  - **"Buy the zine"**: Opens the Stripe-hosted checkout in a new tab
   - **"About me"**: Link to author information
-- **Purchase Popup**: Appears when cycling through all pages, with options to buy or continue reading
 
 ### Mobile Optimizations
 - **Performance**: Automatically reduces rendering quality on mobile devices
@@ -184,7 +184,7 @@ To customize the book content:
 
 ## AR Setup (Required for AR Experience)
 
-The AR experience requires a compiled `.mind` file containing the image targets. Follow these steps:
+The repository includes a compiled ten-target `.mind` file: cover first, followed by the nine inside pages. Recompile it if the images change:
 
 ### Step 1: Compile Image Targets
 
@@ -209,8 +209,7 @@ The AR experience requires a compiled `.mind` file containing the image targets.
 
 ```bash
 npm run dev
-# Navigate to http://localhost:8080/ar.html on your mobile device
-# (Your device must be on the same network)
+# Open http://localhost:8080/ar.html on the same device, or use an HTTPS URL on a phone
 ```
 
 ### Adding More AR Targets
@@ -221,6 +220,10 @@ To add more pages to the AR experience:
 2. Re-download `targets.mind`
 3. Add a new `<a-entity mindar-image-target="targetIndex: N">` in `ar.html`
 4. Add corresponding AR content inside the entity
+
+## Stripe Payment Link setup
+
+The static site links directly to the Stripe-hosted checkout configured in `index.html`, so it works on GitHub Pages without a server or secret key.
 
 ## License
 

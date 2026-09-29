@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Temporarily Closed NYC - An Interactive Zine Experience</title>
     <link rel="stylesheet" href="brand.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260925">
 </head>
 
 <body>
@@ -19,8 +19,8 @@
             </div>
             <div class="navbar-links">
                 <a href="ar.html" class="nav-link nav-link-ar">📱 AR Experience</a>
-                <a href="https://www.etsy.com/listing/1849155237/temporarily-closed-zine-pre-order" target="_blank" rel="noopener noreferrer"
-                    class="nav-link">Buy the zine</a>
+                <a href="https://buy.stripe.com/eVqcN70jac978xA32z14400" target="_blank" rel="noopener noreferrer"
+                    class="nav-link nav-link-buy" id="nav-buy-zine">Buy the zine</a>
                 <a href="https://ron.nyc/" target="_blank" rel="noopener noreferrer" class="nav-link">About me</a>
             </div>
         </div>
@@ -40,6 +40,7 @@
     <div id="canvas-container"></div>
 
     <div id="controls">
+        <button type="button" id="toggle-book" class="toggle-book">Open preview</button>
         <div class="control-hint desktop-only">
             <span class="icon">🖱️</span>
             <span>Click & drag to rotate</span>
@@ -63,14 +64,14 @@
     </div>
 
     <div id="page-indicator">
-        <span id="current-page">Cover</span>
+        <span id="current-page" aria-live="polite">Cover</span>
     </div>
 
     <div id="navigation-arrows">
-        <button id="prev-arrow" class="nav-arrow nav-arrow-left">
+        <button id="prev-arrow" class="nav-arrow nav-arrow-left" aria-label="Previous page">
             <span>‹</span>
         </button>
-        <button id="next-arrow" class="nav-arrow nav-arrow-right">
+        <button id="next-arrow" class="nav-arrow nav-arrow-right" aria-label="Next page">
             <span>›</span>
         </button>
     </div>
@@ -90,7 +91,7 @@
         }
     }
     </script>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=20260925"></script>
 </body>
 
 </html>

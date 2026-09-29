@@ -24,7 +24,3 @@ export const PAGE_FILES = [
     'inside_book/Temporarily_close7.jpg',
     'inside_book/Temporarily_close8.jpg'
 ];
-
-export const LINKS = {
-    buyZine: 'https://www.etsy.com/listing/1849155237/temporarily-closed-zine-pre-order'
-};

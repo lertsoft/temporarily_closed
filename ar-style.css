@@ -99,6 +99,35 @@ body {
     pointer-events: none;
 }
 
+/* Once getUserMedia is live, keep tracking progress visible without hiding the
+   camera. This makes the long model initialization stage useful on mobile. */
+.loading-screen.camera-live {
+    align-items: flex-end;
+    background: transparent;
+    pointer-events: none;
+}
+
+.loading-screen.camera-live .loading-content {
+    width: min(90vw, 360px);
+    margin-bottom: max(28px, env(safe-area-inset-bottom));
+    padding: 12px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--brand-pill);
+    background: rgba(10, 10, 10, 0.78);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+
+.loading-screen.camera-live .book-loader,
+.loading-screen.camera-live h1,
+.loading-screen.camera-live .loading-subtitle {
+    display: none;
+}
+
+.loading-screen.camera-live .loading-status {
+    color: #fff;
+}
+
 .loading-content {
     max-width: 420px;
     padding: 24px;
@@ -305,6 +334,27 @@ body {
     line-height: 1.35;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.open-gallery-shortcut {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(22px, env(safe-area-inset-bottom));
+    z-index: 210;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--brand-pill);
+    background: var(--brand-dark-glass);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.open-gallery-shortcut:focus-visible,
+.open-gallery-shortcut:hover {
+    background: var(--brand-violet-deep);
 }
 
 /* Photo gallery: a light editorial surface over the camera. */
@@ -574,6 +624,21 @@ body {
 .ar-gallery-fullscreen-btn svg {
     width: 18px;
     height: 18px;
+}
+
+.ar-gallery.photo-fullscreen .ar-gallery-thumbnails,
+.ar-gallery.photo-fullscreen .ar-gallery-header-left,
+.ar-gallery.photo-fullscreen .ar-gallery-photo-label {
+    display: none;
+}
+
+.ar-gallery.photo-fullscreen .ar-gallery-header {
+    justify-content: flex-end;
+    background: transparent;
+}
+
+.ar-gallery.photo-fullscreen .ar-gallery-photo-container img {
+    max-height: calc(100dvh - var(--navbar-height) - 120px);
 }
 
 /* Retained for optional gallery footer markup. */

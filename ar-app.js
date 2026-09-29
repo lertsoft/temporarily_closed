@@ -6,7 +6,7 @@ import {
     TARGET_FILE_CANDIDATES,
     GALLERY_PHOTO_METADATA,
     TARGET_METADATA
-} from './ar-config.js';
+} from './ar-config.js?v=20260925';
 
 class ARExperience {
     constructor() {
@@ -16,6 +16,7 @@ class ARExperience {
         this.scene = null;
         this.arSystem = null;
         this.startupTimers = [];
+        this.targetTexturePreloadStarted = false;
         this.activeTarget = null;
         this.regalShowingBefore = false;
         this.audioEnabled = false;
@@ -54,7 +55,12 @@ class ARExperience {
         }
 
         this.configureSceneTargets(targetFile);
-        await this.waitForSceneLoaded(this.scene);
+        try {
+            await this.waitForSceneLoaded(this.scene);
+        } catch (error) {
+            this.showError('The AR engine could not load. Check your connection, then try again.', { showRetry: true });
+            return;
+        }
         this.onSceneLoaded();
         this.startAR();
     }
@@ -75,15 +81,7 @@ class ARExperience {
     }
 
     buildGalleryPhotos() {
-        return GALLERY_PHOTO_METADATA.map((photoMeta) => ({
-            ...photoMeta,
-            imageSrc: this.resolveGalleryImageSrc(photoMeta.id)
-        }));
-    }
-
-    resolveGalleryImageSrc(photoId) {
-        const imageEl = document.getElementById(`photo-${photoId}`);
-        return imageEl?.getAttribute('src') || '';
+        return GALLERY_PHOTO_METADATA.map((photoMeta) => ({ ...photoMeta }));
     }
 
     buildTargets() {
@@ -153,6 +151,7 @@ class ARExperience {
             console.log('MindAR ready');
             this.hideLoadingScreen();
             this.showScanInstructions();
+            this.preloadTargetTexturesWhenIdle();
         });
 
         scene.addEventListener('arError', (e) => {
@@ -174,8 +173,12 @@ class ARExperience {
             return Promise.resolve();
         }
 
-        return new Promise((resolve) => {
-            scene.addEventListener('loaded', resolve, { once: true });
+        return new Promise((resolve, reject) => {
+            const timeout = window.setTimeout(() => reject(new Error('A-Frame scene load timed out')), 15000);
+            scene.addEventListener('loaded', () => {
+                window.clearTimeout(timeout);
+                resolve();
+            }, { once: true });
         });
     }
 
@@ -219,6 +222,17 @@ class ARExperience {
     scheduleStartupProgress() {
         this.clearStartupTimers();
 
+        // MindAR can have a usable camera stream before its tracking model has
+        // finished loading. Reveal that stream immediately instead of covering it
+        // with the full-screen loader for the entire initialization period.
+        const cameraPoll = window.setInterval(() => {
+            if (this.isCameraLive()) {
+                window.clearInterval(cameraPoll);
+                this.revealLiveCamera();
+            }
+        }, 200);
+        this.startupTimers.push(cameraPoll);
+
         this.startupTimers.push(window.setTimeout(() => {
             if (!this.isLoaded) {
                 this.updateLoadingStatus('Loading AR targets...');
@@ -257,6 +271,16 @@ class ARExperience {
         const video = this.scene?.parentNode?.querySelector('video');
         const track = video?.srcObject?.getVideoTracks?.()[0];
         return Boolean(track && track.readyState === 'live' && video.readyState >= 2);
+    }
+
+    revealLiveCamera() {
+        const loading = document.getElementById('loading-screen');
+        if (!loading || loading.classList.contains('camera-live')) {
+            return;
+        }
+
+        loading.classList.add('camera-live');
+        this.updateLoadingStatus('Camera ready. Finishing image tracking...');
     }
 
     updateLoadingStatus(message, { isError = false } = {}) {
@@ -325,19 +349,13 @@ class ARExperience {
                 this.onTargetLost(target.id);
             });
 
-            if (target.supportsCompare) {
-                entity.addEventListener('click', () => {
-                    this.toggleRegalBeforeAfter();
-                });
-            }
         });
 
-        const regalBeforePlane = document.getElementById('regal-before-plane');
-        if (regalBeforePlane) {
-            regalBeforePlane.addEventListener('click', () => {
-                this.toggleRegalBeforeAfter();
+        ['regal-before-plane', 'regal-after-plane'].forEach((id) => {
+            document.getElementById(id)?.addEventListener('click', () => {
+                if (this.activeTarget === 'regal') this.toggleRegalBeforeAfter();
             });
-        }
+        });
     }
 
     setupUIListeners() {
@@ -364,16 +382,6 @@ class ARExperience {
             });
         }
 
-        const scene = document.querySelector('a-scene');
-        if (!scene) {
-            return;
-        }
-
-        scene.addEventListener('click', () => {
-            if (this.activeTarget === 'regal' && this.isTargetVisible('target-regal')) {
-                this.toggleRegalBeforeAfter();
-            }
-        });
     }
 
     setupAudioUnlock() {
@@ -400,7 +408,7 @@ class ARExperience {
             item.className = 'ar-gallery-item';
             item.dataset.photoId = photo.id;
             item.innerHTML = `
-                <img src="${photo.imageSrc}" alt="${photo.title}">
+                <img data-src="${photo.imageSrc}" alt="${photo.title}" loading="lazy" decoding="async">
                 <span>${photo.title}</span>
             `;
 
@@ -435,7 +443,10 @@ class ARExperience {
             });
         }
 
-        this.focusGalleryPhoto(this.galleryPhotos[0].id, { scroll: false });
+        ['open-gallery-btn', 'open-gallery-shortcut'].forEach((id) => {
+            document.getElementById(id)?.addEventListener('click', () => this.showGallery());
+        });
+
     }
 
     showGallery() {
@@ -444,7 +455,15 @@ class ARExperience {
             gallery.classList.remove('hidden');
             gallery.classList.add('visible');
         }
+        this.loadGalleryThumbnails();
         this.galleryUnlocked = true;
+    }
+
+    loadGalleryThumbnails() {
+        document.querySelectorAll('#ar-gallery-track img[data-src]').forEach((image) => {
+            image.src = image.dataset.src;
+            image.removeAttribute('data-src');
+        });
     }
 
     hideGallery() {
@@ -452,20 +471,17 @@ class ARExperience {
         if (gallery) {
             gallery.classList.remove('visible');
             gallery.classList.add('hidden');
+            gallery.classList.remove('photo-fullscreen');
         }
+        document.getElementById('gallery-fullscreen-btn')?.setAttribute('aria-pressed', 'false');
     }
 
     toggleGalleryFullscreen() {
         const gallery = document.getElementById('ar-gallery');
         if (!gallery) return;
 
-        if (!document.fullscreenElement) {
-            gallery.requestFullscreen().catch(err => {
-                console.log('Fullscreen not supported:', err);
-            });
-        } else {
-            document.exitFullscreen();
-        }
+        const expanded = gallery.classList.toggle('photo-fullscreen');
+        document.getElementById('gallery-fullscreen-btn')?.setAttribute('aria-pressed', String(expanded));
     }
 
     onTargetFound(targetName) {
@@ -473,6 +489,8 @@ class ARExperience {
         if (!target) {
             return;
         }
+
+        this.loadTargetTextures(targetName);
 
         if (this.activeTarget === 'regal' && targetName !== 'regal') {
             this.resetRegalState();
@@ -579,11 +597,8 @@ class ARExperience {
     }
 
     unlockGallery() {
-        if (this.galleryUnlocked) {
-            return;
-        }
-
-        this.showGallery();
+        this.galleryUnlocked = true;
+        document.getElementById('open-gallery-shortcut')?.classList.remove('hidden');
     }
 
     focusGalleryPhoto(photoId, options = {}) {
@@ -650,12 +665,16 @@ class ARExperience {
         if (panel) {
             panel.classList.remove('hidden');
         }
+        document.getElementById('open-gallery-shortcut')?.classList.add('hidden');
     }
 
     hideInfoPanel() {
         const panel = document.getElementById('info-panel');
         if (panel) {
             panel.classList.add('hidden');
+        }
+        if (this.galleryUnlocked) {
+            document.getElementById('open-gallery-shortcut')?.classList.remove('hidden');
         }
     }
 
@@ -714,6 +733,38 @@ class ARExperience {
         if (loading) {
             loading.classList.add('hidden');
             this.isLoaded = true;
+        }
+    }
+
+    loadTargetTextures(targetName) {
+        const target = document.getElementById(`target-${targetName}`);
+        target?.querySelectorAll('[data-ar-image]').forEach((entity) => {
+            if (!entity.getAttribute('src')) {
+                entity.setAttribute('src', entity.dataset.arImage);
+            }
+        });
+    }
+
+    preloadTargetTexturesWhenIdle() {
+        if (this.targetTexturePreloadStarted) {
+            return;
+        }
+        this.targetTexturePreloadStarted = true;
+
+        const targetNames = this.targets.map((target) => target.id);
+        const loadNext = () => {
+            const targetName = targetNames.shift();
+            if (!targetName) {
+                return;
+            }
+            this.loadTargetTextures(targetName);
+            window.setTimeout(loadNext, 150);
+        };
+
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(loadNext, { timeout: 1500 });
+        } else {
+            window.setTimeout(loadNext, 300);
         }
     }
 

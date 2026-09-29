@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thank You — Temporarily Closed NYC</title>
+    <meta name="description" content="Thank you for supporting the Temporarily Closed NYC photo zine.">
+    <link rel="stylesheet" href="brand.css">
+    <link rel="stylesheet" href="style.css?v=20260925">
+    <style>
+        .success-page {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            background: linear-gradient(135deg, #fbfbfa 0%, #f0ede8 100%);
+            color: var(--brand-ink, #222);
+            font-family: var(--brand-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+        }
+
+        .success-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(var(--navbar-height, 70px) + 30px) 20px 50px;
+            box-sizing: border-box;
+        }
+
+        .success-card {
+            background: var(--brand-glass, rgba(255, 255, 255, 0.96));
+            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: var(--brand-radius, 20px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.12);
+            max-width: 620px;
+            width: 100%;
+            padding: 45px 35px 35px;
+            text-align: center;
+            box-sizing: border-box;
+            animation: cardAppear 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .success-icon-wrap {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            background: rgba(139, 92, 246, 0.12);
+            color: var(--brand-violet-deep, #6d28d9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            box-shadow: 0 8px 24px rgba(109, 40, 217, 0.15);
+        }
+
+        .success-card h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin: 0 0 10px;
+            color: var(--brand-ink, #222);
+        }
+
+        .success-subtitle {
+            font-size: 16px;
+            color: var(--brand-muted, #555);
+            line-height: 1.5;
+            margin: 0 0 30px;
+        }
+
+        .steps-card {
+            background: rgba(0, 0, 0, 0.025);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 14px;
+            padding: 22px 24px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .steps-card h2 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--brand-muted, #777);
+            margin: 0 0 14px;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.45;
+        }
+
+        .steps-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .steps-list .icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .success-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            border-radius: var(--brand-pill, 999px);
+            background: linear-gradient(135deg, var(--brand-red, #e74c3c), var(--brand-red-deep, #c0392b));
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.35);
+            transition: all 0.25s ease;
+        }
+
+        .btn-action-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.45);
+        }
+
+        .btn-action-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            border-radius: var(--brand-pill, 999px);
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--brand-ink, #333);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            transition: all 0.25s ease;
+        }
+
+        .btn-action-secondary:hover {
+            background: rgba(0, 0, 0, 0.09);
+            transform: translateY(-2px);
+        }
+
+        .success-contact {
+            margin-top: 25px;
+            font-size: 13px;
+            color: var(--brand-muted, #777);
+        }
+
+        .success-contact a {
+            color: var(--brand-violet-deep, #6d28d9);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .success-contact a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .success-card {
+                padding: 30px 20px 25px;
+            }
+
+            .success-card h1 {
+                font-size: 24px;
+            }
+
+            .success-actions {
+                flex-direction: column;
+            }
+
+            .btn-action-primary,
+            .btn-action-secondary {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body class="success-page">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-title">
+                <a href="/">
+                    <h1>Temporarily Closed</h1>
+                </a>
+            </div>
+            <div class="navbar-links">
+                <a href="ar.html" class="nav-link nav-link-ar">📱 AR Experience</a>
+                <a href="/" class="nav-link">📖 3D Book</a>
+                <a href="https://ron.nyc/" target="_blank" rel="noopener noreferrer" class="nav-link">About me</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="success-container">
+        <div class="success-card">
+            <div class="success-icon-wrap" aria-hidden="true">✓</div>
+            <h1>Thank you for supporting the zine</h1>
+            <p class="success-subtitle">
+                If you just completed checkout, your payment provider will email the receipt. That receipt confirms your order.
+            </p>
+
+            <div class="steps-card">
+                <h2>Next steps</h2>
+                <ul class="steps-list">
+                    <li>
+                        <span class="icon">✉️</span>
+                        <span>Check your inbox for your checkout receipt and order details.</span>
+                    </li>
+                    <li>
+                        <span class="icon">📦</span>
+                        <span>Shipping options and timing are shown in your checkout confirmation.</span>
+                    </li>
+                    <li>
+                        <span class="icon">📬</span>
+                        <span>Contact Ronny if you have a question about your order.</span>
+                    </li>
+                    <li>
+                        <span class="icon">📱</span>
+                        <span>The interactive AR experience is ready when you have your copy.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="success-actions">
+                <a href="ar.html" class="btn-action-primary">📱 Try the AR Experience</a>
+                <a href="/" class="btn-action-secondary">📖 Back to 3D Book</a>
+            </div>
+
+            <div class="success-contact">
+                Have a question or a special signing request? Reach Ronny directly at <a href="mailto:ron@ron.nyc">ron@ron.nyc</a>.
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
