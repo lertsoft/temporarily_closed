@@ -5,7 +5,7 @@ import {
     SWIPE_CONFIG,
     BOOK_DIMENSIONS,
     PAGE_FILES
-} from './book-config.js?v=20260925';
+} from './book-config.js?v=20261004';
 
 class InteractiveBook {
     constructor() {
@@ -95,6 +95,8 @@ class InteractiveBook {
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         
         const container = document.getElementById('canvas-container');
+        this.renderer.domElement.setAttribute('role', 'img');
+        this.renderer.domElement.setAttribute('aria-label', 'Interactive 3D preview of Temporarily Closed NYC, a photo zine by Ronny Coste documenting New York City during the pandemic.');
         container.appendChild(this.renderer.domElement);
     }
 
@@ -136,19 +138,12 @@ class InteractiveBook {
     async loadTextures() {
         const loader = new THREE.TextureLoader();
         
-        // Load cover textures with enhanced quality settings
-        this.textures.front = await loader.loadAsync('Temporarily_closed_cover.jpg');
-        this.enhanceTexture(this.textures.front);
-        
-        this.textures.back = await loader.loadAsync('Temporarily_closed.jpg');
-        this.enhanceTexture(this.textures.back);
-
-        // Load page textures with enhanced quality
-        for (const pageFile of this.pageFiles) {
-            const texture = await loader.loadAsync(pageFile);
-            this.enhanceTexture(texture);
-            this.textures.pages.push(texture);
-        }
+        // Load the small WebP derivatives in parallel for the original automatic-start viewer.
+        const textures = await Promise.all([
+            'images/Temporarily_closed_cover.webp', 'images/Temporarily_closed.webp', ...this.pageFiles
+        ].map(file => loader.loadAsync(file)));
+        textures.forEach(texture => this.enhanceTexture(texture));
+        [this.textures.front, this.textures.back, ...this.textures.pages] = textures;
     }
 
     enhanceTexture(texture) {

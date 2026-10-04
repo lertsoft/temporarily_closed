@@ -3,8 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temporarily Closed NYC - AR Experience</title>
+    <meta name="description"
+        content="Scan your printed Temporarily Closed NYC zine to see augmented reality photos. Follow the phone camera instructions and troubleshooting guide.">
+    <link rel="canonical" href="https://temporarilyclosed.nyc/ar.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Temporarily Closed NYC">
+    <meta property="og:title" content="Temporarily Closed NYC - AR Experience">
+    <meta property="og:description"
+        content="Scan your printed Temporarily Closed NYC zine to see augmented reality photos. Follow the phone camera instructions and troubleshooting guide.">
+    <meta property="og:url" content="https://temporarilyclosed.nyc/ar.html">
+    <meta property="og:image" content="https://temporarilyclosed.nyc/images/Temporarily_close3.webp">
+    <meta property="og:image:alt"
+        content="Zine spread showing Charging Bull and the closed Regal cinema in New York City">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="preconnect" href="https://aframe.io" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -15,14 +28,16 @@
     <script defer src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <link rel="stylesheet" href="brand.css">
-    <link rel="stylesheet" href="ar-style.css?v=20260925">
+    <link rel="stylesheet" href="ar-style.css?v=20261004">
+    <script
+        type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Temporarily Closed", "item": "https://temporarilyclosed.nyc/"}, {"@type": "ListItem", "position": 2, "name": "AR Experience", "item": "https://temporarilyclosed.nyc/ar.html"}]}</script>
 </head>
 
 <body>
     <nav class="navbar ar-navbar" aria-label="AR experience navigation">
         <div class="navbar-content">
             <div class="navbar-title">
-                <a href="index.html" aria-label="Back to the interactive book">
+                <a href="/" aria-label="Back to the Zine">
                     <span class="ar-back-icon" aria-hidden="true">←</span>
                     <h1>Temporarily Closed</h1>
                 </a>
@@ -39,12 +54,12 @@
                 <div class="book-page"></div>
                 <div class="book-page"></div>
             </div>
-            <h1>Temporarily Closed</h1>
+            <h2>Temporarily Closed</h2>
             <p class="loading-subtitle">NYC AR Experience</p>
             <p class="loading-status" role="status" aria-live="polite">Preparing AR...</p>
             <div id="loading-actions" class="loading-actions hidden">
                 <button type="button" id="retry-ar-btn" class="loading-retry-btn">Try again</button>
-                <a href="index.html" class="loading-back-link">Back to the book</a>
+                <a href="/" class="loading-back-link">Back to the Zine</a>
             </div>
         </div>
     </div>
@@ -59,7 +74,8 @@
         </div>
         <p class="scan-text">Point camera at a page in the zine</p>
     </div>
-    <button type="button" id="open-gallery-shortcut" class="open-gallery-shortcut hidden" aria-label="Open scanned photo gallery">View scanned photos</button>
+    <button type="button" id="open-gallery-shortcut" class="open-gallery-shortcut hidden"
+        aria-label="Open scanned photo gallery">View scanned photos</button>
 
     <!-- AR Gallery - Full Screen Overlay -->
     <div id="ar-gallery" class="ar-gallery hidden">
@@ -71,7 +87,8 @@
             </div>
             <div class="ar-gallery-controls">
                 <!-- Camera button - return to AR scanning -->
-                <button type="button" id="gallery-camera-btn" class="ar-gallery-btn camera-btn" title="Return to Camera" aria-label="Return to camera">
+                <button type="button" id="gallery-camera-btn" class="ar-gallery-btn camera-btn" title="Return to Camera"
+                    aria-label="Return to camera">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -80,7 +97,8 @@
                     </svg>
                 </button>
                 <!-- Close button -->
-                <button type="button" id="gallery-close-btn" class="ar-gallery-btn" title="Close Gallery" aria-label="Close gallery">
+                <button type="button" id="gallery-close-btn" class="ar-gallery-btn" title="Close Gallery"
+                    aria-label="Close gallery">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -97,13 +115,15 @@
         <!-- Main photo display -->
         <div class="ar-gallery-main">
             <div class="ar-gallery-photo-container">
-                <img id="gallery-main-image" alt="Active AR photo" decoding="async">
+                <img id="gallery-main-image" width="1600" height="1306" alt="Photograph from the scanned zine page"
+                    decoding="async">
                 <div class="ar-gallery-photo-label">
                     <h2 id="gallery-photo-title">Regal Cinemas</h2>
                     <p id="gallery-photo-description">Times Square theater activity has returned after its pandemic
                         closure.</p>
                 </div>
-                <button type="button" id="gallery-fullscreen-btn" class="ar-gallery-fullscreen-btn" title="Expand photo" aria-label="Expand photo" aria-pressed="false">
+                <button type="button" id="gallery-fullscreen-btn" class="ar-gallery-fullscreen-btn" title="Expand photo"
+                    aria-label="Expand photo" aria-pressed="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -124,7 +144,8 @@
                 <button type="button" id="open-gallery-btn" class="info-btn info-btn-secondary">View Photo</button>
             </div>
         </div>
-        <button type="button" id="close-info" class="close-info-btn" aria-label="Close information panel">&times;</button>
+        <button type="button" id="close-info" class="close-info-btn"
+            aria-label="Close information panel">&times;</button>
     </div>
 
     <!-- A-Frame AR Scene -->
@@ -135,7 +156,8 @@
         vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" loading-screen="enabled: false">
 
         <!-- Camera -->
-        <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable"></a-camera>
+        <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse"
+            raycaster="objects: .clickable"></a-camera>
 
         <!-- Target 0: Cover -->
         <a-entity id="target-cover" mindar-image-target="targetIndex: 0">
@@ -162,11 +184,13 @@
         <!-- Target 1: Regal Cinemas (inside_book/Temporarily_close3.jpg) -->
         <a-entity id="target-regal" mindar-image-target="targetIndex: 1">
             <!-- "After" AR photo -->
-            <a-plane id="regal-after-plane" class="clickable" data-ar-image="ar-assets/display/2025-regal_cinema42st.jpg" position="0 0 0.01" width="0.45" height="0.55"></a-plane>
+            <a-plane id="regal-after-plane" class="clickable" data-ar-image="images/2025-regal_cinema42st.webp"
+                position="0 0 0.01" width="0.45" height="0.55"></a-plane>
 
             <!-- Before image overlay (hidden by default) -->
-            <a-plane id="regal-before-plane" data-ar-image="inside_book/Temporarily_close3.jpg" position="0 0 0.02" width="0.45" height="0.55"
-                material="opacity: 0; transparent: true; repeat: 0.5 1; offset: 0.5 0" class="before-overlay clickable"></a-plane>
+            <a-plane id="regal-before-plane" data-ar-image="images/Temporarily_close3.webp" position="0 0 0.02"
+                width="0.45" height="0.55" material="opacity: 0; transparent: true; repeat: 0.5 1; offset: 0.5 0"
+                class="before-overlay clickable"></a-plane>
 
             <!-- Animated border to show AR is active -->
             <a-entity position="0 0 0.02">
@@ -183,13 +207,14 @@
             <!-- "Tap to see before" indicator -->
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.4" height="0.08" opacity="0.7" id="regal-tap-indicator"></a-plane>
-                <a-text id="regal-tap-text" value="TAP TO COMPARE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
+                <a-text id="regal-tap-text" value="TAP TO COMPARE" color="#FFFFFF" align="center" width="0.8"
+                    position="0 0 0.01"></a-text>
             </a-entity>
         </a-entity>
 
         <!-- Target 2 -->
         <a-entity id="target-nypl" mindar-image-target="targetIndex: 2">
-            <a-plane data-ar-image="ar-assets/display/2025-nypl.jpg" position="0 0 0.01" width="0.44" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-nypl.webp" position="0 0 0.01" width="0.44" height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="NYPL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
@@ -198,7 +223,8 @@
 
         <!-- Target 3 -->
         <a-entity id="target-nypl-lyon" mindar-image-target="targetIndex: 3">
-            <a-plane data-ar-image="ar-assets/display/2025-nypl_lyon.jpg" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-nypl_lyon.webp" position="0 0 0.01" width="0.674"
+                height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.64" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="NYPL LIONS" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
@@ -207,7 +233,7 @@
 
         <!-- Target 4 -->
         <a-entity id="target-nyse" mindar-image-target="targetIndex: 4">
-            <a-plane data-ar-image="ar-assets/display/2025-nyse.jpg" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-nyse.webp" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="NYSE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
@@ -216,7 +242,8 @@
 
         <!-- Target 5 -->
         <a-entity id="target-wallst-bull" mindar-image-target="targetIndex: 5">
-            <a-plane data-ar-image="ar-assets/display/2025-wallst_bull.jpg" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-wallst_bull.webp" position="0 0 0.01" width="0.674"
+                height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.72" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="WALL ST BULL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
@@ -225,7 +252,8 @@
 
         <!-- Target 6 -->
         <a-entity id="target-timesquare-police" mindar-image-target="targetIndex: 6">
-            <a-plane data-ar-image="ar-assets/display/2025-timesquare_police.jpg" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-timesquare_police.webp" position="0 0 0.01" width="0.674"
+                height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.86" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="TIMES SQUARE" color="#FFFFFF" align="center" width="0.9" position="0 0 0.01"></a-text>
@@ -234,7 +262,8 @@
 
         <!-- Target 7 -->
         <a-entity id="target-grandcentral" mindar-image-target="targetIndex: 7">
-            <a-plane data-ar-image="ar-assets/display/2025-grandcentral.jpg" position="0 0 0.01" width="0.44" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-grandcentral.webp" position="0 0 0.01" width="0.44"
+                height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.78" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="GRAND CENTRAL" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
@@ -243,7 +272,8 @@
 
         <!-- Target 8 -->
         <a-entity id="target-washingtonsq" mindar-image-target="targetIndex: 8">
-            <a-plane data-ar-image="ar-assets/display/2025-washingtonsq_park.jpg" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-washingtonsq_park.webp" position="0 0 0.01" width="0.674"
+                height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.84" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="WASHINGTON SQ" color="#FFFFFF" align="center" width="0.9" position="0 0 0.01"></a-text>
@@ -252,7 +282,7 @@
 
         <!-- Target 9 -->
         <a-entity id="target-8ave" mindar-image-target="targetIndex: 9">
-            <a-plane data-ar-image="ar-assets/display/2025-8ave.jpg" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
+            <a-plane data-ar-image="images/2025-8ave.webp" position="0 0 0.01" width="0.674" height="0.55"></a-plane>
             <a-entity position="0 -0.35 0.02">
                 <a-plane color="#000000" width="0.5" height="0.08" opacity="0.7"></a-plane>
                 <a-text value="8TH AVE" color="#FFFFFF" align="center" width="0.8" position="0 0 0.01"></a-text>
@@ -261,7 +291,7 @@
 
     </a-scene>
 
-    <script type="module" src="ar-app.js?v=20260925"></script>
+    <script type="module" src="ar-app.js?v=20261004"></script>
 </body>
 
 </html>

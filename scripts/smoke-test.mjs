@@ -21,15 +21,15 @@ function run() {
         'ar.html',
         'brand.css',
         'ar-style.css',
-        'ar-assets/display/2025-regal_cinema42st.jpg',
-        'ar-assets/display/2025-nypl.jpg',
-        'ar-assets/display/2025-nypl_lyon.jpg',
-        'ar-assets/display/2025-nyse.jpg',
-        'ar-assets/display/2025-wallst_bull.jpg',
-        'ar-assets/display/2025-timesquare_police.jpg',
-        'ar-assets/display/2025-grandcentral.jpg',
-        'ar-assets/display/2025-washingtonsq_park.jpg',
-        'ar-assets/display/2025-8ave.jpg',
+        'images/2025-regal_cinema42st.webp',
+        'images/2025-nypl.webp',
+        'images/2025-nypl_lyon.webp',
+        'images/2025-nyse.webp',
+        'images/2025-wallst_bull.webp',
+        'images/2025-timesquare_police.webp',
+        'images/2025-grandcentral.webp',
+        'images/2025-washingtonsq_park.webp',
+        'images/2025-8ave.webp',
         'app.js',
         'ar-app.js',
         'book-config.js',
@@ -64,9 +64,9 @@ function run() {
     assert(arAppJs.includes('60000') && !arAppJs.includes('}, 15000);'), 'Mobile startup timeout handling has regressed');
     assert(arAppJs.includes('revealLiveCamera') && arAppJs.includes('preloadTargetTexturesWhenIdle'), 'Mobile camera performance optimizations are missing');
     assert(arHtml.includes('id="regal-tap-text"'), 'Regal tap text id is missing in ar.html');
-    assert(arHtml.includes('releases/1.6.0/aframe.min.js'), 'AR page is not using a compatible A-Frame version');
+    assert(arHtml.includes('releases/1.6.0/aframe.min.js'), 'AR page must keep its original compatible A-Frame version');
     assert(!arHtml.includes('<a-scene mindar-image='), 'MindAR must not autostart before lifecycle listeners are attached');
-    assert(arHtml.includes('ar-assets/display/2025-regal_cinema42st.jpg'), 'AR page is not using optimized display images');
+    assert(arHtml.includes('images/2025-regal_cinema42st.webp'), 'AR page is not using optimized display images');
     assert(!arHtml.includes('<a-assets'), 'Nonessential images must not block AR scene and camera startup');
     assert(arHtml.includes('data-ar-image='), 'AR textures are not configured for deferred loading');
     assert(targets.subarray(0, 13).toString('hex') === '82a17602a8646174614c697374', 'Unexpected MindAR target bundle format');

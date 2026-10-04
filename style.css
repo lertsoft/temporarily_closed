@@ -49,7 +49,7 @@ body {
     color: inherit;
 }
 
-.navbar-title h1 {
+.navbar-title :is(h1, .brand-title) {
     font-size: 24px;
     font-weight: 700;
     color: var(--brand-ink);
@@ -57,33 +57,121 @@ body {
     transition: color 0.3s ease;
 }
 
-.navbar-title a:hover h1 {
+.navbar-title a:hover :is(h1, .brand-title) {
     color: var(--brand-red);
 }
 
 .navbar-links {
     display: flex;
-    gap: 30px;
+    gap: 12px;
     align-items: center;
 }
 
 .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
     text-decoration: none;
     color: var(--brand-muted);
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
+    line-height: 1.1;
     padding: 8px 16px;
-    border-radius: 25px;
-    transition: all 0.3s ease;
+    border-radius: var(--brand-pill);
+    border: 1px solid transparent;
+    transition: color 0.25s var(--brand-ease), background-color 0.25s var(--brand-ease),
+        border-color 0.25s var(--brand-ease), box-shadow 0.25s var(--brand-ease),
+        transform 0.25s var(--brand-ease);
     position: relative;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
-    color: #333;
+    color: var(--brand-ink);
     background: rgba(0, 0, 0, 0.05);
+}
+
+.nav-link:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* Tertiary: plain text link */
+.nav-link-quiet {
+    padding-inline: 12px;
+}
+
+/* Secondary: post-purchase AR entry */
+.nav-link-secondary {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1px;
+    padding: 5px 16px 5px 14px;
+    color: var(--brand-violet-deep);
+    border-color: rgba(109, 40, 217, 0.22);
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.nav-link-secondary:hover {
+    color: var(--brand-violet-deep);
+    background: rgba(139, 92, 246, 0.11);
+    border-color: rgba(109, 40, 217, 0.4);
     transform: translateY(-1px);
 }
 
+.nav-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--brand-muted);
+    opacity: 0.85;
+}
+
+.nav-ar-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 650;
+    font-size: 14px;
+}
+
+.nav-icon {
+    flex-shrink: 0;
+    transition: transform 0.4s var(--brand-ease);
+}
+
+.nav-link-secondary:hover .nav-icon {
+    transform: rotate(-12deg) scale(1.1);
+}
+
+/* Primary: purchase */
+.nav-cta {
+    padding: 10px 20px;
+    color: #fff;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--brand-red), var(--brand-red-deep));
+    box-shadow: 0 4px 14px rgba(231, 76, 60, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.nav-cta:hover {
+    color: #fff;
+    background: linear-gradient(135deg, #ec5a4a, var(--brand-red-deep));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(231, 76, 60, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.nav-cta-arrow {
+    display: inline-block;
+    transition: transform 0.3s var(--brand-ease);
+}
+
+.nav-cta:hover .nav-cta-arrow {
+    transform: translateX(3px);
+}
+
+/* Used as the primary action on post-purchase pages (success) */
 .nav-link-ar {
     background: linear-gradient(45deg, var(--brand-violet), var(--brand-violet-deep));
     color: white;
@@ -421,21 +509,27 @@ body:active {
         padding: 0 15px;
     }
 
-    .navbar-title h1 {
+    .navbar-title :is(h1, .brand-title) {
         font-size: 20px;
     }
 
     .navbar-links {
-        gap: 15px;
+        gap: 8px;
     }
 
     .nav-link {
         font-size: 14px;
         padding: 6px 12px;
+        min-height: 38px;
     }
 
-    .nav-link-ar {
+    .nav-link-ar,
+    .nav-cta {
         padding: 8px 16px;
+    }
+
+    .nav-link-secondary {
+        padding: 4px 12px;
     }
 
     .control-hint {
@@ -498,7 +592,7 @@ body:active {
 
 @media (max-width: 480px) {
     .navbar-links {
-        gap: 10px;
+        gap: 6px;
     }
 
     .nav-link {
@@ -506,11 +600,12 @@ body:active {
         padding: 5px 10px;
     }
 
-    .nav-link-ar {
+    .nav-link-ar,
+    .nav-cta {
         padding: 7px 14px;
     }
 
-    .navbar-title h1 {
+    .navbar-title :is(h1, .brand-title) {
         font-size: 18px;
     }
 
@@ -554,10 +649,20 @@ body:active {
     .navbar-links {
         width: 100%;
         justify-content: center;
-        gap: 4px;
+        gap: 6px;
     }
-    .nav-link { font-size: 12px; padding: 5px 8px; white-space: nowrap; }
+    .nav-link { font-size: 12px; padding: 5px 8px; min-height: 36px; white-space: nowrap; }
     .nav-link-ar { padding: 7px 8px; }
+    .nav-cta { padding: 7px 14px; }
+    /* Keep the purchase CTA visually dominant on small screens */
+    .nav-link-secondary { padding: 3px 10px; }
+    .nav-ar-label { font-size: 12px; }
+    .nav-eyebrow { font-size: 9px; }
     #page-indicator { top: calc(var(--navbar-height) + 12px); }
     #controls { bottom: max(10px, env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 360px) {
+    .nav-eyebrow { display: none; }
+    .nav-link-quiet { padding-inline: 6px; }
 }

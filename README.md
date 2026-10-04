@@ -228,3 +228,11 @@ The static site links directly to the Stripe-hosted checkout configured in `inde
 ## License
 
 MIT License - feel free to use and modify for your projects!
+
+## SEO and image optimization
+
+The original 3D homepage, AR startup flow, and visual design are preserved. Technical SEO changes include canonical tags, descriptions, social metadata, Book/breadcrumb structured data, a generated sitemap, permissive crawl rules, and a custom 404 page matching the existing site.
+
+Run `npm run images` to regenerate WebP textures and `npm run build` to regenerate `sitemap.xml`. Original JPEGs and compiled tracking targets are retained. Book textures load concurrently. `npm run check` validates JavaScript, existing smoke checks, and HTML metadata/local references.
+
+See [SEO implementation notes](docs/seo/README.md) for remaining publication and verification work.

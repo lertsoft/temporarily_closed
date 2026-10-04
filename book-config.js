@@ -14,13 +14,13 @@ export const BOOK_DIMENSIONS = {
 };
 
 export const PAGE_FILES = [
-    'inside_book/Temporarily_close1.jpg',
-    'inside_book/Temporarily_close2.jpg',
-    'inside_book/Temporarily_close3.jpg',
-    'inside_book/Temporarily_close3.5.jpg',
-    'inside_book/Temporarily_close4.jpg',
-    'inside_book/Temporarily_close5.jpg',
-    'inside_book/Temporarily_close6.jpg',
-    'inside_book/Temporarily_close7.jpg',
-    'inside_book/Temporarily_close8.jpg'
+    'images/Temporarily_close1.webp',
+    'images/Temporarily_close2.webp',
+    'images/Temporarily_close3.webp',
+    'images/Temporarily_close3.5.webp',
+    'images/Temporarily_close4.webp',
+    'images/Temporarily_close5.webp',
+    'images/Temporarily_close6.webp',
+    'images/Temporarily_close7.webp',
+    'images/Temporarily_close8.webp'
 ];

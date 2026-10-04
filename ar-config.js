@@ -1,61 +1,60 @@
 export const TARGET_FILE_CANDIDATES = [
     'ar-assets/targets.mind',
-    'ar-assets/cover.mind',
-    'ar-assets/target.mind'
+    'ar-assets/cover.mind'
 ];
 
 export const GALLERY_PHOTO_METADATA = [
     {
         id: 'regal',
-        imageSrc: 'ar-assets/display/2025-regal_cinema42st.jpg',
+        imageSrc: 'images/2025-regal_cinema42st.webp',
         title: 'Regal Cinemas - Times Square',
         description: 'Times Square theater activity has returned after its pandemic closure.'
     },
     {
         id: 'nypl',
-        imageSrc: 'ar-assets/display/2025-nypl.jpg',
+        imageSrc: 'images/2025-nypl.webp',
         title: 'New York Public Library',
         description: 'Street-level view outside the New York Public Library after reopening.'
     },
     {
         id: 'nypl-lyon',
-        imageSrc: 'ar-assets/display/2025-nypl_lyon.jpg',
+        imageSrc: 'images/2025-nypl_lyon.webp',
         title: 'NYPL Lions',
         description: 'Patience and Fortitude outside NYPL in a busier city moment.'
     },
     {
         id: 'nyse',
-        imageSrc: 'ar-assets/display/2025-nyse.jpg',
+        imageSrc: 'images/2025-nyse.webp',
         title: 'New York Stock Exchange',
         description: 'Wall Street foot traffic and activity near the NYSE.'
     },
     {
         id: 'wallst-bull',
-        imageSrc: 'ar-assets/display/2025-wallst_bull.jpg',
+        imageSrc: 'images/2025-wallst_bull.webp',
         title: 'Charging Bull',
         description: 'Lower Manhattan crowds around the iconic Wall Street bull.'
     },
     {
         id: 'timesquare-police',
-        imageSrc: 'ar-assets/display/2025-timesquare_police.jpg',
+        imageSrc: 'images/2025-timesquare_police.webp',
         title: 'Times Square',
         description: 'A contemporary Times Square street scene with heavy pedestrian flow.'
     },
     {
         id: 'grandcentral',
-        imageSrc: 'ar-assets/display/2025-grandcentral.jpg',
+        imageSrc: 'images/2025-grandcentral.webp',
         title: 'Grand Central',
         description: 'Commuter movement and restored rhythm around Grand Central.'
     },
     {
         id: 'washingtonsq',
-        imageSrc: 'ar-assets/display/2025-washingtonsq_park.jpg',
+        imageSrc: 'images/2025-washingtonsq_park.webp',
         title: 'Washington Square Park',
         description: 'Public life and gatherings in Washington Square Park.'
     },
     {
         id: '8ave',
-        imageSrc: 'ar-assets/display/2025-8ave.jpg',
+        imageSrc: 'images/2025-8ave.webp',
         title: '8th Avenue',
         description: 'A reopened 8th Avenue corridor with normal city traffic.'
     }

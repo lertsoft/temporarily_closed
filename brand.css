@@ -62,7 +62,7 @@ button {
     text-decoration: none;
 }
 
-.navbar-title h1 {
+.navbar-title :is(h1, .brand-title) {
     color: var(--brand-ink);
     font-size: 24px;
     font-weight: 700;
@@ -70,7 +70,7 @@ button {
     transition: color 0.3s ease;
 }
 
-.navbar-title a:hover h1 {
+.navbar-title a:hover :is(h1, .brand-title) {
     color: var(--brand-red);
 }
 
@@ -83,7 +83,7 @@ button {
         padding: 0 15px;
     }
 
-    .navbar-title h1 {
+    .navbar-title :is(h1, .brand-title) {
         font-size: 20px;
     }
 }
@@ -98,3 +98,6 @@ button {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* A navigation label can keep the heading appearance without adding an H1. */
+.brand-title { display: block; }

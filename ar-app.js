@@ -6,7 +6,7 @@ import {
     TARGET_FILE_CANDIDATES,
     GALLERY_PHOTO_METADATA,
     TARGET_METADATA
-} from './ar-config.js?v=20260925';
+} from './ar-config.js?v=20261004';
 
 class ARExperience {
     constructor() {
@@ -126,7 +126,7 @@ class ARExperience {
             content.innerHTML = `
                 <div class="https-error">
                     <div class="error-icon">📷</div>
-                    <h1>Setup Required</h1>
+                    <h2>Setup Required</h2>
                     <p class="loading-subtitle">Image Targets Missing</p>
                     <p class="error-message">
                         The AR image targets haven't been compiled yet.
@@ -310,7 +310,7 @@ class ARExperience {
                 content.innerHTML = `
                     <div class="https-error">
                         <div class="error-icon">🔒</div>
-                        <h1>HTTPS Required</h1>
+                        <h2>HTTPS Required</h2>
                         <p class="loading-subtitle">For Camera Access</p>
                         <p class="error-message">
                             AR experiences require a secure connection (HTTPS) to access your camera.
@@ -408,7 +408,7 @@ class ARExperience {
             item.className = 'ar-gallery-item';
             item.dataset.photoId = photo.id;
             item.innerHTML = `
-                <img data-src="${photo.imageSrc}" alt="${photo.title}" loading="lazy" decoding="async">
+                <img data-src="${photo.imageSrc}" alt="${photo.description}" width="160" height="130" loading="lazy" decoding="async">
                 <span>${photo.title}</span>
             `;
 
@@ -618,7 +618,7 @@ class ARExperience {
 
         if (mainImage) {
             mainImage.src = photo.imageSrc;
-            mainImage.alt = photo.title;
+            mainImage.alt = photo.description;
         }
         if (photoTitle) {
             photoTitle.textContent = photo.title;

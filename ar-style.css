@@ -119,7 +119,7 @@ body {
 }
 
 .loading-screen.camera-live .book-loader,
-.loading-screen.camera-live h1,
+.loading-screen.camera-live :is(h1, h2),
 .loading-screen.camera-live .loading-subtitle {
     display: none;
 }
@@ -176,7 +176,7 @@ body {
     }
 }
 
-.loading-content h1 {
+.loading-content :is(h1, h2) {
     margin-bottom: 7px;
     font-size: 28px;
     font-weight: 700;
@@ -832,7 +832,7 @@ body {
     font-size: 48px;
 }
 
-.https-error h1 {
+.https-error :is(h1, h2) {
     margin-bottom: 8px;
     font-size: 24px;
     letter-spacing: -0.3px;
@@ -944,7 +944,7 @@ body {
 }
 
 @media (max-width: 480px) {
-    .ar-navbar .navbar-title h1 {
+    .ar-navbar .navbar-title :is(h1, .brand-title) {
         max-width: 168px;
         overflow: hidden;
         font-size: 17px;
@@ -961,7 +961,7 @@ body {
         font-size: 11px;
     }
 
-    .loading-content h1 {
+    .loading-content :is(h1, h2) {
         font-size: 22px;
     }
 

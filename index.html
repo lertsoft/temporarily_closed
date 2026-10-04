@@ -3,10 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temporarily Closed NYC - An Interactive Zine Experience</title>
+    <meta name="description" content="New York City during the pandemic, photographed by Ronny Coste. Look inside the Temporarily Closed NYC photo zine, explore the 3D preview, or buy a copy.">
+    <link rel="canonical" href="https://temporarilyclosed.nyc/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Temporarily Closed NYC">
+    <meta property="og:title" content="Temporarily Closed NYC - An Interactive Zine Experience">
+    <meta property="og:description" content="New York City during the pandemic, photographed by Ronny Coste. Look inside the Temporarily Closed NYC photo zine, explore the 3D preview, or buy a copy.">
+    <meta property="og:url" content="https://temporarilyclosed.nyc/">
+    <meta property="og:image" content="https://temporarilyclosed.nyc/images/Temporarily_close3.webp">
+    <meta property="og:image:alt" content="Zine spread showing Charging Bull and the closed Regal cinema in New York City">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="brand.css">
-    <link rel="stylesheet" href="style.css?v=20260925">
+    <link rel="stylesheet" href="style.css?v=20261004">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "@id": "https://temporarilyclosed.nyc/#book", "name": "Temporarily Closed NYC", "author": {"@type": "Person", "name": "Ronny Coste", "url": "https://ron.nyc/"}, "url": "https://temporarilyclosed.nyc/", "image": "https://temporarilyclosed.nyc/images/Temporarily_closed_cover.webp", "inLanguage": "en", "description": "A photo zine by Ronny Coste documenting New York City during the pandemic."}</script>
 </head>
 
 <body>
@@ -18,10 +29,25 @@
                 </a>
             </div>
             <div class="navbar-links">
-                <a href="ar.html" class="nav-link nav-link-ar">📱 AR Experience</a>
+                <a href="https://ron.nyc/" target="_blank" rel="noopener noreferrer" class="nav-link nav-link-quiet"
+                    id="nav-about">About me</a>
+                <a href="ar.html" class="nav-link nav-link-secondary" id="nav-ar"
+                    aria-label="Have a copy? Open the AR experience">
+                    <span class="nav-eyebrow" aria-hidden="true">Have a copy?</span>
+                    <span class="nav-ar-label" aria-hidden="true">
+                        <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            focusable="false">
+                            <path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z" />
+                            <path d="m3 7 9 5 9-5M12 12v10" />
+                        </svg>
+                        Open AR
+                    </span>
+                </a>
                 <a href="https://buy.stripe.com/eVqcN70jac978xA32z14400" target="_blank" rel="noopener noreferrer"
-                    class="nav-link nav-link-buy" id="nav-buy-zine">Buy the zine</a>
-                <a href="https://ron.nyc/" target="_blank" rel="noopener noreferrer" class="nav-link">About me</a>
+                    class="nav-link nav-cta" id="nav-buy-zine">
+                    Buy the zine <span class="nav-cta-arrow" aria-hidden="true">→</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -37,7 +63,7 @@
         </div>
     </div>
 
-    <div id="canvas-container"></div>
+    <main id="canvas-container" aria-label="Interactive preview of the Temporarily Closed NYC photo zine"></main>
 
     <div id="controls">
         <button type="button" id="toggle-book" class="toggle-book">Open preview</button>
@@ -83,6 +109,7 @@
         </div>
     </div>
 
+    <link rel="modulepreload" href="https://unpkg.com/three@0.157.0/build/three.module.js" crossorigin>
     <script type="importmap">
     {
         "imports": {
@@ -91,7 +118,7 @@
         }
     }
     </script>
-    <script type="module" src="app.js?v=20260925"></script>
+    <script type="module" src="app.js?v=20261004"></script>
 </body>
 
 </html>

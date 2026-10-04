@@ -1,0 +1,122 @@
+{
+  "Temporarily_closed_cover.jpg": {
+    "src": "images/Temporarily_closed_cover.webp",
+    "width": 1600,
+    "height": 2473,
+    "bytes": 24116
+  },
+  "Temporarily_closed.jpg": {
+    "src": "images/Temporarily_closed.webp",
+    "width": 1600,
+    "height": 2473,
+    "bytes": 19256
+  },
+  "inside_book/Temporarily_close1.jpg": {
+    "src": "images/Temporarily_close1.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 36988
+  },
+  "inside_book/Temporarily_close2.jpg": {
+    "src": "images/Temporarily_close2.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 58642
+  },
+  "inside_book/Temporarily_close3.5.jpg": {
+    "src": "images/Temporarily_close3.5.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 58602
+  },
+  "inside_book/Temporarily_close3.jpg": {
+    "src": "images/Temporarily_close3.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 94694
+  },
+  "inside_book/Temporarily_close4.jpg": {
+    "src": "images/Temporarily_close4.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 148898
+  },
+  "inside_book/Temporarily_close5.jpg": {
+    "src": "images/Temporarily_close5.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 87992
+  },
+  "inside_book/Temporarily_close6.jpg": {
+    "src": "images/Temporarily_close6.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 74572
+  },
+  "inside_book/Temporarily_close7.jpg": {
+    "src": "images/Temporarily_close7.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 73934
+  },
+  "inside_book/Temporarily_close8.jpg": {
+    "src": "images/Temporarily_close8.webp",
+    "width": 1600,
+    "height": 1236,
+    "bytes": 176924
+  },
+  "ar-assets/display/2025-8ave.jpg": {
+    "src": "images/2025-8ave.webp",
+    "width": 1600,
+    "height": 1305,
+    "bytes": 255984
+  },
+  "ar-assets/display/2025-grandcentral.jpg": {
+    "src": "images/2025-grandcentral.webp",
+    "width": 1277,
+    "height": 1600,
+    "bytes": 114966
+  },
+  "ar-assets/display/2025-nypl.jpg": {
+    "src": "images/2025-nypl.webp",
+    "width": 1277,
+    "height": 1600,
+    "bytes": 147288
+  },
+  "ar-assets/display/2025-nypl_lyon.jpg": {
+    "src": "images/2025-nypl_lyon.webp",
+    "width": 1600,
+    "height": 1305,
+    "bytes": 263862
+  },
+  "ar-assets/display/2025-nyse.jpg": {
+    "src": "images/2025-nyse.webp",
+    "width": 1600,
+    "height": 1305,
+    "bytes": 219026
+  },
+  "ar-assets/display/2025-regal_cinema42st.jpg": {
+    "src": "images/2025-regal_cinema42st.webp",
+    "width": 1305,
+    "height": 1600,
+    "bytes": 142976
+  },
+  "ar-assets/display/2025-timesquare_police.jpg": {
+    "src": "images/2025-timesquare_police.webp",
+    "width": 1600,
+    "height": 1305,
+    "bytes": 233988
+  },
+  "ar-assets/display/2025-wallst_bull.jpg": {
+    "src": "images/2025-wallst_bull.webp",
+    "width": 1600,
+    "height": 1305,
+    "bytes": 275176
+  },
+  "ar-assets/display/2025-washingtonsq_park.jpg": {
+    "src": "images/2025-washingtonsq_park.webp",
+    "width": 1600,
+    "height": 1305,
+    "bytes": 445722
+  }
+}
