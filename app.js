@@ -57,6 +57,7 @@ class InteractiveBook {
         this.createBook();
         this.setupControls();
         this.setupEventListeners();
+        this.updatePageIndicator();
         this.animate();
         this.hideLoadingScreen();
     }
@@ -340,6 +341,7 @@ class InteractiveBook {
         this.renderer.domElement.addEventListener('pointermove', (event) => {
             if (this.pointerStart && Math.hypot(event.clientX - this.pointerStart.x, event.clientY - this.pointerStart.y) > 6) {
                 this.wasDragging = true;
+                this.dismissMobileGuideHint?.();
             }
         });
         this.renderer.domElement.addEventListener('pointerup', () => { this.pointerStart = null; });
@@ -475,6 +477,8 @@ class InteractiveBook {
     async openBook() {
         this.bookState.isAnimating = true;
         this.bookState.isOpen = true;
+        document.body.classList.add('book-open');
+        this.dismissMobileGuideHint?.();
         const openingRotation = Math.atan2(Math.sin(this.book.rotation.y), Math.cos(this.book.rotation.y));
 
         // Hide the cover
@@ -521,6 +525,7 @@ class InteractiveBook {
     closeBook() {
         this.bookState.isAnimating = true;
         this.bookState.isOpen = false;
+        document.body.classList.remove('book-open');
 
         // Hide all pages
         this.bookState.pages.forEach(page => page.visible = false);
@@ -670,11 +675,14 @@ class InteractiveBook {
     }
 
     updatePageIndicator() {
+        const container = document.getElementById('page-indicator');
         const indicator = document.getElementById('current-page');
         if (!this.bookState.isOpen) {
             indicator.textContent = 'Cover';
+            if (container) container.classList.remove('is-open');
         } else {
             indicator.textContent = `Page ${this.bookState.currentPage + 1} of ${this.bookState.pages.length}`;
+            if (container) container.classList.add('is-open');
         }
     }
 
@@ -732,11 +740,41 @@ class InteractiveBook {
         }
     }
 
+    setupMobileGuideHint() {
+        const hint = document.getElementById('mobile-guide-hint');
+        if (!hint) return;
+
+        this.mobileHintDismissed = false;
+        this.dismissMobileGuideHint = () => {
+            if (this.mobileHintDismissed) return;
+            this.mobileHintDismissed = true;
+            hint.classList.add('fade-out');
+            setTimeout(() => {
+                hint.style.display = 'none';
+            }, 600);
+        };
+
+        // Auto fade after 4 seconds
+        setTimeout(() => {
+            this.dismissMobileGuideHint();
+        }, 4000);
+
+        // Dismiss on first touch/pointer interaction
+        const onFirstInteract = () => {
+            this.dismissMobileGuideHint();
+            window.removeEventListener('pointerdown', onFirstInteract);
+            window.removeEventListener('touchstart', onFirstInteract);
+        };
+        window.addEventListener('pointerdown', onFirstInteract, { passive: true, once: true });
+        window.addEventListener('touchstart', onFirstInteract, { passive: true, once: true });
+    }
+
     hideLoadingScreen() {
         const loadingScreen = document.getElementById('loading-screen');
         loadingScreen.classList.add('hidden');
         setTimeout(() => {
             loadingScreen.style.display = 'none';
+            this.setupMobileGuideHint();
         }, 500);
     }
 

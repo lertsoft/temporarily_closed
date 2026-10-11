@@ -30,7 +30,7 @@
             </div>
             <div class="navbar-links">
                 <a href="https://ron.nyc/" target="_blank" rel="noopener noreferrer" class="nav-link nav-link-quiet"
-                    id="nav-about">About me</a>
+                    id="nav-about"><span class="nav-about-text">About</span><span class="desktop-only-inline"> me</span></a>
                 <a href="ar.html" class="nav-link nav-link-secondary" id="nav-ar"
                     aria-label="Have a copy? Open the AR experience">
                     <span class="nav-eyebrow" aria-hidden="true">Have a copy?</span>
@@ -41,7 +41,7 @@
                             <path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z" />
                             <path d="m3 7 9 5 9-5M12 12v10" />
                         </svg>
-                        Open AR
+                        <span class="desktop-only-inline">Open </span>AR
                     </span>
                 </a>
                 <a href="https://buy.stripe.com/eVqcN70jac978xA32z14400" target="_blank" rel="noopener noreferrer"
@@ -66,26 +66,22 @@
     <main id="canvas-container" aria-label="Interactive preview of the Temporarily Closed NYC photo zine"></main>
 
     <div id="controls">
+        <div id="mobile-guide-hint" class="mobile-guide-hint mobile-only" aria-hidden="true">
+            <span class="icon">👆</span>
+            <span>Drag to rotate · Tap book to open</span>
+        </div>
         <button type="button" id="toggle-book" class="toggle-book">Open preview</button>
         <div class="control-hint desktop-only">
             <span class="icon">🖱️</span>
             <span>Click & drag to rotate</span>
         </div>
-        <div class="control-hint mobile-only">
-            <span class="icon">👆</span>
-            <span>Move the book</span>
-        </div>
-        <div class="control-hint">
+        <div class="control-hint desktop-only">
             <span class="icon">📖</span>
             <span>Tap to open</span>
         </div>
         <div class="control-hint desktop-only">
             <span class="icon">⬅️➡️</span>
             <span>Arrow keys to turn pages</span>
-        </div>
-        <div class="control-hint mobile-only">
-            <span class="icon">👆</span>
-            <span>Swipe left/right to turn pages</span>
         </div>
     </div>
 
